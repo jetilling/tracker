@@ -14,6 +14,7 @@ import * as express from 'express';
 /*  
     Import controllers
 */ 
+import * as auth from './controllers/authentication';
 import * as timeTracker from './controllers/timeTracker';
 import * as addJob from './controllers/addJob';
 import * as textService from './controllers/textService';
@@ -47,6 +48,8 @@ export class WebApi
   {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+    app.use("/node_modules", express.static(path.resolve(__dirname, './node_modules')));
+    app.use(express.static(__dirname + '/src'));
     massive(process.env.DB_CONNECT).then(db => {
       app.set('db', db);
     })
@@ -60,42 +63,10 @@ export class WebApi
    */
   private configureRoutes(app: express.Express)
   {
+    app.use('/auth', auth);
     app.use('/time', timeTracker);
     app.use('/job', addJob);
     app.use('/alert', textService)
-
-    app.get('/', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-
-      let startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY')
-
-      req.app.get('db').jobs.find().then((jobs: types.IJobsRaw) => {
-          req.app.get('db').week_time.find({
-            week_of: startOfWeek
-          }).then((weekInfo: [types.IWeekInfoRaw]) => {
-            
-            if (weekInfo.length > 0) 
-            {
-              res.status(200).send({
-                success: true, 
-                jobs: jobs, 
-                total_time: weekInfo[0].total_time_for_week
-              })
-            }
-
-            else 
-            {
-              req.app.get('db').week_time.insert({
-                total_time_for_week: 0,
-                week_of: startOfWeek
-              }).then((weekInfo: types.IWeekInfoRaw) => {
-                res.status(200).send({success: true, jobs: jobs, total_time: weekInfo.total_time_for_week})
-              }).catch((err: types.IError) => next(err))
-            }
-          }).catch((err: types.IError) => next(err))
-      }).catch((err: types.IError) => next(err))
-
-    })
-
   }
 
   /**
