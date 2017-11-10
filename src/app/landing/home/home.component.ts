@@ -26,18 +26,6 @@ export class HomeComponent
   
 
 //--------------Methods---------------//
-
-  showLoginForm() {
-    this.showLogin = true;
-    this.showRegister = false;
-    console.log(this.showLogin)
-  }
-
-  showRegisterForm() {
-    this.showLogin = false;
-    this.showRegister = true;
-    console.log(this.showLogin)
-  }
   
   // /**
   //  * The JSON web token of the currently logged in user

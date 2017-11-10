@@ -122,8 +122,8 @@ export class AuthService
    */
   logout(): boolean 
   {
-    localStorage.removeItem('opusId')
-    document.cookie = 'Opus_User=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    localStorage.removeItem('trackerId')
+    document.cookie = 'tracker=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     return true;
   }
 
@@ -203,8 +203,8 @@ export class AuthService
  setCookies(res: IRegisterUser, newUser: boolean) 
  {
     if (res && res.token) {
-      document.cookie = `Opus_User=${res.token}; Path=/;`
-      localStorage.setItem('opusId', res.id+'');
+      document.cookie = `tracker=${res.token}; Path=/;`
+      localStorage.setItem('trackerId', res.id+'');
       this.currentUser = res
     }
     newUser ? this.router.navigate(['/validate']) : this.router.navigate(['/dashboard'])

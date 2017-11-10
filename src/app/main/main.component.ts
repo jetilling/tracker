@@ -21,11 +21,11 @@ export class MainComponent implements OnInit
   /**
    * The JSON web token of the currently logged in user
    */
-  opusUser: string = document.cookie.split("Opus_User=")[1];
+  tracker: string = document.cookie.split("tracker=")[1];
 
   ngOnInit() 
   {
-    if(this.opusUser && this.opusUser.split('.').length === 3){
+    if(this.tracker && this.tracker.split('.').length === 3){
     this.auth.getUser()
       .subscribe(
         res => {
