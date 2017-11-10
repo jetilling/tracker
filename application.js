@@ -5,11 +5,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 */
 var bodyParser = require("body-parser");
 var dotenv = require("dotenv");
-var moment = require("moment");
+var path = require("path");
 var massive = require("massive");
+var express = require("express");
 /*
     Import controllers
 */
+var auth = require("./controllers/authentication");
 var timeTracker = require("./controllers/timeTracker");
 var addJob = require("./controllers/addJob");
 var textService = require("./controllers/textService");
@@ -31,6 +33,8 @@ var WebApi = (function () {
     WebApi.prototype.configureMiddleware = function (app) {
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(bodyParser.json());
+        app.use("/node_modules", express.static(path.resolve(__dirname, './node_modules')));
+        app.use(express.static(__dirname + '/src'));
         massive(process.env.DB_CONNECT).then(function (db) {
             app.set('db', db);
         });
@@ -42,33 +46,10 @@ var WebApi = (function () {
      * @param app
      */
     WebApi.prototype.configureRoutes = function (app) {
+        app.use('/auth', auth);
         app.use('/time', timeTracker);
         app.use('/job', addJob);
         app.use('/alert', textService);
-        app.get('/', function (req, res, next) {
-            var startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY');
-            req.app.get('db').jobs.find().then(function (jobs) {
-                req.app.get('db').week_time.find({
-                    week_of: startOfWeek
-                }).then(function (weekInfo) {
-                    if (weekInfo.length > 0) {
-                        res.status(200).send({
-                            success: true,
-                            jobs: jobs,
-                            total_time: weekInfo[0].total_time_for_week
-                        });
-                    }
-                    else {
-                        req.app.get('db').week_time.insert({
-                            total_time_for_week: 0,
-                            week_of: startOfWeek
-                        }).then(function (weekInfo) {
-                            res.status(200).send({ success: true, jobs: jobs, total_time: weekInfo.total_time_for_week });
-                        }).catch(function (err) { return next(err); });
-                    }
-                }).catch(function (err) { return next(err); });
-            }).catch(function (err) { return next(err); });
-        });
     };
     /**
      *

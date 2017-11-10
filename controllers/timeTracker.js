@@ -41,9 +41,34 @@ var clockOut = function (req, res, next) {
         }).catch(function (err) { return next(err); });
     }).catch(function (err) { return next(err); });
 };
+var startNewWeek = function (req, res, next) {
+    var startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY');
+    req.app.get('db').jobs.find().then(function (jobs) {
+        req.app.get('db').week_time.find({
+            week_of: startOfWeek
+        }).then(function (weekInfo) {
+            if (weekInfo.length > 0) {
+                res.status(200).send({
+                    success: true,
+                    jobs: jobs,
+                    total_time: weekInfo[0].total_time_for_week
+                });
+            }
+            else {
+                req.app.get('db').week_time.insert({
+                    total_time_for_week: 0,
+                    week_of: startOfWeek
+                }).then(function (weekInfo) {
+                    res.status(200).send({ success: true, jobs: jobs, total_time: weekInfo.total_time_for_week });
+                }).catch(function (err) { return next(err); });
+            }
+        }).catch(function (err) { return next(err); });
+    }).catch(function (err) { return next(err); });
+};
 /*=====================Helper Function==========================*/
 /*===========================Endpoints============================*/
 timeRouter.post('/clockin', clockIn);
 timeRouter.put('/clockOut', clockOut);
+timeRouter.post('/startNewWeek', startNewWeek);
 module.exports = timeRouter;
 //# sourceMappingURL=timeTracker.js.map

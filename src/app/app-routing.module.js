@@ -8,7 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var routes = [];
+//--------Components---------//
+var home_component_1 = require("./landing/home/home.component");
+var register_component_1 = require("./authentication/register/register.component");
+var login_component_1 = require("./authentication/login/login.component");
+var routes = [
+    { path: '', redirectTo: '/landing', pathMatch: 'full' },
+    { path: 'landing', component: home_component_1.HomeComponent },
+    { path: 'login', component: login_component_1.LoginComponent },
+    { path: 'register', component: register_component_1.RegisterComponent }
+];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }

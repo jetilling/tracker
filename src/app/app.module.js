@@ -12,6 +12,7 @@ var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 //--------Components---------//
+var main_component_1 = require("./main/main.component");
 var home_component_1 = require("./landing/home/home.component");
 var login_component_1 = require("./authentication/login/login.component");
 var register_component_1 = require("./authentication/register/register.component");
@@ -35,16 +36,17 @@ var AppModule = (function () {
                 forms_1.ReactiveFormsModule
             ],
             declarations: [
+                main_component_1.MainComponent,
                 home_component_1.HomeComponent,
                 login_component_1.LoginComponent,
-                register_component_1.RegisterComponent
+                register_component_1.RegisterComponent,
             ],
             providers: [
                 auth_service_1.AuthService,
                 commonFunctions_service_1.CommonFunctions,
                 users_service_1.UsersService
             ],
-            bootstrap: [home_component_1.HomeComponent]
+            bootstrap: [main_component_1.MainComponent]
         })
     ], AppModule);
     return AppModule;

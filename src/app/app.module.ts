@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule }     from '@angular/forms';
 import { HttpModule, JsonpModule }              from '@angular/http';
 
 //--------Components---------//
+import { MainComponent }                        from './main/main.component';
 import { HomeComponent }                        from './landing/home/home.component';
 import { LoginComponent }                       from './authentication/login/login.component';
 import { RegisterComponent }                    from './authentication/register/register.component';
@@ -27,16 +28,17 @@ import { AppRoutingModule }                     from './app-routing.module';
     ReactiveFormsModule
   ],
   declarations: [
+    MainComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   providers: [
     AuthService,
     CommonFunctions,
     UsersService
   ],
-  bootstrap: [ HomeComponent ]
+  bootstrap: [ MainComponent ]
 })
 
 export class AppModule {}
