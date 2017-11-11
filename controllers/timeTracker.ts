@@ -61,9 +61,40 @@ let clockOut = (req: express.Request, res: express.Response, next: express.NextF
 
     }).catch((err: types.IError) => next(err))
 
-    
-
 }
+
+let startNewWeek = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+
+  let startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY')
+  
+  req.app.get('db').jobs.find().then((jobs: types.IJobsRaw) => {
+      req.app.get('db').week_time.find({
+        week_of: startOfWeek
+      }).then((weekInfo: [types.IWeekInfoRaw]) => {
+        
+        if (weekInfo.length > 0) 
+        {
+          res.status(200).send({
+            success: true, 
+            jobs: jobs, 
+            total_time: weekInfo[0].total_time_for_week
+          })
+        }
+
+        else 
+        {
+          req.app.get('db').week_time.insert({
+            total_time_for_week: 0,
+            week_of: startOfWeek
+          }).then((weekInfo: types.IWeekInfoRaw) => {
+            res.status(200).send({success: true, jobs: jobs, total_time: weekInfo.total_time_for_week})
+          }).catch((err: types.IError) => next(err))
+        }
+      }).catch((err: types.IError) => next(err))
+  }).catch((err: types.IError) => next(err))
+  
+}
+
 
 /*=====================Helper Function==========================*/
 
@@ -72,5 +103,6 @@ let clockOut = (req: express.Request, res: express.Response, next: express.NextF
 
 timeRouter.post('/clockin', clockIn);
 timeRouter.put('/clockOut', clockOut);
+timeRouter.post('/startNewWeek', startNewWeek);
 
 export = timeRouter;
