@@ -8,12 +8,16 @@
 var express = require("express");
 var moment = require("moment");
 var jwt = require("jwt-simple");
-var bcrypt = require("bcrypt-nodejs");
 var randToken = require("rand-token");
 var dotenv = require("dotenv");
+/*
+    Import any application utilities
+*/
+var security_1 = require("../utilities/security");
 /*=====================Configuration======================*/
 dotenv.config({ path: '.env' });
 var authRouter = express.Router();
+var security = new security_1.Security();
 /*=====================Functions==========================*/
 /**
  * Create JWT
@@ -63,20 +67,21 @@ var login = function (req, res) {
     */
     db.users.findOne({ email: req.body.email }).then(function (result) {
         if (!result) {
-            return res.status(401).send({
+            res.send({
                 message: 'Invalid email and/or password'
             });
         }
         else if (!result.email_validated)
-            return res.status(400).send({
+            res.send({
+                validated: false,
                 message: 'User is not validated. Please validate your email'
             });
         else if (result) {
-            bcrypt.compare(req.body.password, result.password, function (err, passwordIsCorrect) {
+            security.decrypt(req.body.password, result.password).then(function (passwordIsCorrect) {
                 if (passwordIsCorrect)
                     res.send(getSafeUser(result));
                 else
-                    res.status(401).send({
+                    res.send({
                         message: 'Invalid email and/or password'
                     });
             });
@@ -102,7 +107,7 @@ var register = function (req, res, next) {
     */
     db.users.findOne({ email: req.body.email }).then(function (result) {
         if (result) {
-            return res.status(409).send({ message: 'Email is already taken' });
+            res.status(409).send({ message: 'Email is already taken' });
         }
         else {
             /*
@@ -110,44 +115,29 @@ var register = function (req, res, next) {
                 Insert new user information into the users table in the database
             */
             var token_1 = randToken.generate(16);
-            var passwordHash_1;
-            var phoneHash_1;
-            bcrypt.genSalt(10, function (err, salt) {
-                if (err)
-                    return next(err);
-                /*
-                    Encrypt the user's password
-                */
-                bcrypt.hash(req.body.password, salt, null, function (err, hash) {
-                    if (err)
-                        return next(err);
-                    passwordHash_1 = hash;
+            security.encrypt(req.body.password).then(function (hash) {
+                var passwordHash = hash;
+                security.encrypt(req.body.phoneNumber).then(function (hash) {
+                    var phoneHash = hash;
                     /*
-                        Encrypt the user's phone number
+                        Insert the user into the database
                     */
-                    bcrypt.hash(req.body.phoneNumber, salt, null, function (err, hash) {
-                        if (err)
-                            return next(err);
-                        phoneHash_1 = hash;
+                    db.users.insert({
+                        email: req.body.email,
+                        password: passwordHash,
+                        firstname: req.body.firstName,
+                        activated: 'FALSE',
+                        email_validated: 'FALSE',
+                        validation_token: token_1,
+                        phone_number: phoneHash,
+                        level: 2
+                    }).then(function (result) {
                         /*
-                            Insert the user into the database
+                            Send the logged in user information to the front end
                         */
-                        db.users.insert({
-                            email: req.body.email,
-                            password: passwordHash_1,
-                            firstname: req.body.firstName,
-                            activated: 'FALSE',
-                            email_validated: 'FALSE',
-                            validation_token: token_1,
-                            phone_number: phoneHash_1
-                        }).then(function (result) {
-                            /*
-                                Send the logged in user information to the front end
-                            */
-                            res.send(getSafeUser(result));
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
+                        res.send(getSafeUser(result));
+                    }).catch(function (err) {
+                        console.log(err);
                     });
                 });
             });

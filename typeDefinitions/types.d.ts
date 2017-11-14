@@ -1,3 +1,9 @@
+import * as express from 'express';
+
+export interface expressRequest extends express.Request {
+  user: IUserObject
+}
+
 export interface IError {
 
 }
@@ -24,7 +30,8 @@ export interface IRawUserObject {
   id: number,
   email: string,
   password: string,
-  first_name: string,
+  firstname: string,
+  lastname: string,
   activated: boolean,
   email_validated: string,
   validation_token: string,
@@ -33,6 +40,17 @@ export interface IRawUserObject {
 export interface IUserObject {
   id: number,
   email: string,
-  first_name: string,
+  firstname: string,
+  lastname: string,
   token: string
+}
+
+export interface IAddMemberRes {
+  
+}
+
+export interface ITeamRes {
+  id: number,
+  name: string,
+  description: string
 }

@@ -18,7 +18,6 @@
         <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
             <input class="field-input" type="text" name="email" [(ngModel)]="model.phoneNumber" #email="ngModel" required />
             <label class="field-label" for="email">Phone Number</label>
-            <div *ngIf="emailIsAlreadyTaken" class="form-email-taken">Phone Number is strangely already taken</div>
         </div>
       </div>
       <div class="row">

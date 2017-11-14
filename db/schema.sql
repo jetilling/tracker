@@ -20,16 +20,31 @@ CREATE TABLE time (
   total_time TEXT
 );
 
-Create table users (
+CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email VARCHAR(80),
   password TEXT,
   firstname VARCHAR(80),
+  lastname VARCHAR(80),
   activated BOOLEAN,
   email_validated BOOLEAN,
   validation_token TEXT,
-  phone_number TEXT
+  phone_number TEXT,
+  level INTEGER
 );
+
+CREATE TABLE teams (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(120),
+  description TEXT
+)
+
+CREATE TABLE users_to_teams (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  user_id INTEGER REFERENCES users(id),
+  owner BOOLEAN
+)
 
 -- Create statuses table
 CREATE TABLE statuses (
