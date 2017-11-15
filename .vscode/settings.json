@@ -1,0 +1,20 @@
+{
+  "typescript.check.tscVersion": false,
+  "workbench.iconTheme": "vscode-icons",
+  "telemetry.enableTelemetry": false,
+
+  "files.exclude": {
+      "**/*.js": true,
+      "**/*.js.map": true,
+      "**/src/**/*.js": true
+      // "**/auth/**/*.js": true,
+      // "dashbaord/*.js": true
+  },
+  "editor.tabSize": 2,
+  "editor.minimap.enabled": false,
+  "python.linting.pylintArgs": [
+      "--indent-string=\"  \""
+  ],
+  "python.linting.enabled": false,
+  "workbench.sideBar.location": "left",
+}

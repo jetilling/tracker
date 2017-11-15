@@ -2,17 +2,34 @@ CREATE TABLE jobs (
   id SERIAL PRIMARY KEY,
   name TEXT,
   description TEXT,
-  total_hours INTEGER
+  start_date TIMESTAMP,
+  end_date TIMESTAMP,
+  estimated_duration INTEGER,
+  estimated_cost INTEGER,
+  total_seconds_worked INTEGER
 );
 
-CREATE TABLE week_time (
+CREATE TABLE verify (
   id SERIAL PRIMARY KEY,
-  job_id INTEGER REFERENCES jobs(id),
-  total_time_for_week TEXT
+  phrase TEXT
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(80),
+  password TEXT,
+  firstname VARCHAR(80),
+  lastname VARCHAR(80),
+  activated BOOLEAN,
+  email_validated BOOLEAN,
+  validation_token TEXT,
+  phone_number TEXT,
+  level INTEGER
 );
 
 CREATE TABLE time (
   id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
   job_id INTEGER REFERENCES jobs(id),
   week_time INTEGER REFERENCES week_time(id),
   clock_in TIMESTAMP,
@@ -20,16 +37,26 @@ CREATE TABLE time (
   total_time TEXT
 );
 
-Create table users (
+CREATE TABLE week_time (
   id SERIAL PRIMARY KEY,
-  email VARCHAR(80),
-  password TEXT,
-  firstname VARCHAR(80),
-  activated BOOLEAN,
-  email_validated BOOLEAN,
-  validation_token TEXT,
-  phone_number TEXT
+  user_id INTEGER REFERENCES users(id),
+  week_starting TIMESTAMP,
+  week_ending TIMESTAMP,
+  total_time_for_week INTEGER
 );
+
+CREATE TABLE teams (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(120),
+  description TEXT
+)
+
+CREATE TABLE users_to_teams (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  user_id INTEGER REFERENCES users(id),
+  owner BOOLEAN
+)
 
 -- Create statuses table
 CREATE TABLE statuses (

@@ -14,6 +14,11 @@ import * as randToken from 'rand-token';
 import * as dotenv from 'dotenv';
 
 /*
+    Import any application utilities
+*/
+import { Security } from '../utilities/security';
+
+/*
     Import type interfaces
 */
 import * as types from '../typeDefinitions/types';
@@ -22,6 +27,7 @@ import * as types from '../typeDefinitions/types';
 
 dotenv.config({ path: '.env' });
 let authRouter = express.Router();
+let security = new Security()
 
 /*=====================Functions==========================*/
 
@@ -48,13 +54,16 @@ let createJWT = (user: types.IRawUserObject): string => {
  * @param user types.RawUserObject
  * @returns User object with type: types.UserObject
  */
-let getSafeUser = (user: types.IRawUserObject): types.IUserObject => {
-  return {
+let getSafeUser = (req: types.expressRequest, user: types.IRawUserObject): types.IUserObject => {
+  let authorized_user = {
     id: user.id,
     email: user.email,
-    first_name: user.first_name,
+    firstname: user.firstname,
+    lastname: user.lastname,
     token: createJWT(user)
   }
+  req.user = authorized_user
+  return authorized_user
 }
 
 /**
@@ -64,7 +73,7 @@ let getSafeUser = (user: types.IRawUserObject): types.IUserObject => {
  * @param req express.Request
  * @param res express.Response
  */
-let login = (req: express.Request, res: express.Response) => {
+let login = (req: types.expressRequest, res: express.Response) => {
 
   /*
       Grab our database instance
@@ -79,7 +88,7 @@ let login = (req: express.Request, res: express.Response) => {
 
       if (!result) 
       {
-        return res.status(401).send({
+        res.send({
           message: 'Invalid email and/or password'
         })
       }
@@ -89,7 +98,8 @@ let login = (req: express.Request, res: express.Response) => {
           stating they have yet to validate their email
           TODO: Maybe have an option for them to request a new verification email
       */
-      else if (!result.email_validated) return res.status(400).send({
+      else if (!result.email_validated) res.send({
+          validated: false,
           message: 'User is not validated. Please validate your email'
       })
 
@@ -102,16 +112,12 @@ let login = (req: express.Request, res: express.Response) => {
       */
       else if (result) 
       { 
-        bcrypt.compare(req.body.password, result.password, function(err, passwordIsCorrect)
-        {
-
-          if (passwordIsCorrect) res.send( getSafeUser(result) )
-          else res.status(401).send({
-            message: 'Invalid email and/or password'
-          })
-
+        security.compare(req.body.password, result.password).then(passwordIsCorrect => {
+          if (passwordIsCorrect) res.send( getSafeUser(req, result) )
+            else res.send({
+              message: 'Invalid email and/or password'
+            })
         })
-
       }
     })
   }
@@ -124,85 +130,75 @@ let login = (req: express.Request, res: express.Response) => {
    * @param res express.Response
    * @param next express.NextFunction
    */
-let register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+let registerNewUser = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
 
   /*
       Grab our database instance
   */
   let db = req.app.get('db');
 
-    /*
-        Tries to find a user with the provided email. If one exists then sends a message stating
-        that email is already taken
-    */
-    db.users.findOne({ email: req.body.email }).then((result: types.IRawUserObject) => {
+  /*
+      Tries to find a user with the provided email. If one exists then sends a message stating
+      that email is already taken
+  */
+  db.users.findOne({ email: req.body.email }).then((result: types.IRawUserObject) => {
 
-      if (result)
-      {
-        return res.status(409).send({ message: 'Email is already taken' })
-      }
-      else 
-      { 
+    if (result)
+    {
+      res.status(409).send({ message: 'Email is already taken' })
+    }
+    else 
+    { 
 
-        /*
-            Encrypt the provided password
-            Insert new user information into the users table in the database
-        */
-        let token = randToken.generate(16);
-        let passwordHash: string;
-        let phoneHash: string;
+      /*
+          Encrypt the provided password
+          Insert new user information into the users table in the database
+      */
+      let token: string = randToken.generate(16);
 
-        bcrypt.genSalt(10, function(err, salt)
-        {
-          if (err) return next(err)
+      security.hash(req.body.password).then(resultingHash => {
+        let passwordHash = resultingHash
+
+        security.hash(req.body.phoneNumber).then(resultingHash => {
+          let phoneHash = resultingHash
 
           /*
-              Encrypt the user's password
+              Insert the user into the database
           */
-          bcrypt.hash(req.body.password, salt, null, (err, hash) => {
-            if (err) return next(err)
-            passwordHash = hash;
+          db.users.insert({
+            email: req.body.email,
+            password: passwordHash, 
+            firstname: req.body.firstName, 
+            activated: 'FALSE',
+            email_validated: 'FALSE',
+            validation_token: token,
+            phone_number: phoneHash,
+            level: 2
+          }).then((result: types.IRawUserObject) => {
 
-            /*
-                Encrypt the user's phone number
-            */
-            bcrypt.hash(req.body.phoneNumber, salt, null, (err, hash) => {
-              if (err) return next(err)
-              phoneHash = hash;
-
-              /*
-                  Insert the user into the database
+              /* 
+                  Send the logged in user information to the front end
               */
-              db.users.insert({
-                email: req.body.email,
-                password: passwordHash, 
-                firstname: req.body.firstName, 
-                activated: 'FALSE',
-                email_validated: 'FALSE',
-                validation_token: token,
-                phone_number: phoneHash
-              }).then((result: types.IRawUserObject) => {
+              res.send( getSafeUser(req, result) )
 
-                  /* 
-                      Send the logged in user information to the front end
-                  */
-                  res.send( getSafeUser(result) )
-
-              }).catch((err: types.IError) => {
-                console.log(err)
-              })
-            })
+          }).catch((err: types.IError) => {
+            console.log(err)
           })
         })
-      }
-    }).catch((err: types.IError) => {
-      console.log(err)
-    })
-  }
+      })
+    }
+  }).catch((err: types.IError) => {
+    console.log(err)
+  })
+}
+
+let registerAddedUser = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+
+}
 
 /*===========================Endpoints============================*/
 
   authRouter.post('/login', login);
-  authRouter.post('/register', register);
+  authRouter.post('/register', registerNewUser);
 
   export = authRouter;

@@ -82,7 +82,7 @@ export class AuthService
           .map(this.common.extractData)
           .subscribe(
               res => {
-                this.setCookies(res, false)
+                this.setCookies(res, res.validated)
               },
               err => {
                 if (err.status === 401) {
@@ -198,16 +198,16 @@ export class AuthService
  * Sets a cookie with JSON web token and stores logged in user id in localstorage
  * Navigates user to correct page depending on if they are new or not
  * @param {IRegisterUser} res - Response from server
- * @param {boolean} newUser - Trigger if user is new or not
+ * @param {boolean} validates - Trigger if user is new or not
  */
- setCookies(res: IRegisterUser, newUser: boolean) 
+ setCookies(res: IRegisterUser, validated: boolean) 
  {
     if (res && res.token) {
       document.cookie = `tracker=${res.token}; Path=/;`
       localStorage.setItem('trackerId', res.id+'');
       this.currentUser = res
     }
-    newUser ? this.router.navigate(['/validate']) : this.router.navigate(['/dashboard'])
+    validated ? this.router.navigate(['/dashboard']) : this.router.navigate(['/validate'])
  }
 
 }
