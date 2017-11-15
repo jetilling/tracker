@@ -1,25 +1,22 @@
-import * as bcrypt from 'bcrypt-nodejs';
+import * as argon2 from 'argon2';
 
 export class Security {
 
   hash = (itemToEncrypt: string) => {
     return new Promise((resolve, reject) => {
-      bcrypt.genSalt(10, (err, salt) => {
-        if (err) reject(err)
+      const hashOptions = {
+        timeCost: 4, memoryCost: 13, parallelism: 2, type: argon2.argon2id
+      };
 
-        bcrypt.hash(itemToEncrypt, salt, null, (err, hash) => {
-            if (err) reject(err)
-            resolve(hash)
-        })
+      argon2.hash(itemToEncrypt, hashOptions).then(hash => {
+          resolve(hash)
       })
-      
     })
   }
 
   compare = (itemToCheck: string, itemToCheckAgainst: string) => {
     return new Promise((resolve, reject) => {
-      bcrypt.compare(itemToCheck, itemToCheckAgainst, (err, passwordIsCorrect) => {
-        if (err) reject(err)
+      argon2.verify(itemToCheck, itemToCheckAgainst).then(passwordIsCorrect => {
         resolve(passwordIsCorrect)
       })
     })

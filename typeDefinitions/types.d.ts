@@ -14,7 +14,8 @@ export interface IJobsRaw {
 }
 
 export interface ITimeRaw {
-  id: number
+  id: number,
+  user_id: number,
   job_id: number,
   week_time: number,
   clock_in: Date,
@@ -22,8 +23,23 @@ export interface ITimeRaw {
   total_time: number 
 }
 
-export interface IWeekInfoRaw {
+export interface IWeek {
+  id: number,
+  user_id: number,
+  week_starting: Date,
+  week_ending: Date,
   total_time_for_week: number
+}
+
+export interface IJobs {
+  id: number,
+  name: string,
+  description: string,
+  start_date: Date,
+  end_date: Date,
+  estimated_duration: number,
+  estimated_cost: number,
+  total_seconds_worked: number
 }
 
 export interface IRawUserObject {

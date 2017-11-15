@@ -2,22 +2,16 @@ CREATE TABLE jobs (
   id SERIAL PRIMARY KEY,
   name TEXT,
   description TEXT,
-  total_hours INTEGER
+  start_date TIMESTAMP,
+  end_date TIMESTAMP,
+  estimated_duration INTEGER,
+  estimated_cost INTEGER,
+  total_seconds_worked INTEGER
 );
 
-CREATE TABLE week_time (
+CREATE TABLE verify (
   id SERIAL PRIMARY KEY,
-  job_id INTEGER REFERENCES jobs(id),
-  total_time_for_week TEXT
-);
-
-CREATE TABLE time (
-  id SERIAL PRIMARY KEY,
-  job_id INTEGER REFERENCES jobs(id),
-  week_time INTEGER REFERENCES week_time(id),
-  clock_in TIMESTAMP,
-  clock_out TIMESTAMP,
-  total_time TEXT
+  phrase TEXT
 );
 
 CREATE TABLE users (
@@ -31,6 +25,24 @@ CREATE TABLE users (
   validation_token TEXT,
   phone_number TEXT,
   level INTEGER
+);
+
+CREATE TABLE time (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  job_id INTEGER REFERENCES jobs(id),
+  week_time INTEGER REFERENCES week_time(id),
+  clock_in TIMESTAMP,
+  clock_out TIMESTAMP,
+  total_time TEXT
+);
+
+CREATE TABLE week_time (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  week_starting TIMESTAMP,
+  week_ending TIMESTAMP,
+  total_time_for_week INTEGER
 );
 
 CREATE TABLE teams (

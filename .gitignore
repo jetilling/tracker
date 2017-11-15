@@ -5,3 +5,4 @@ src/**/*.js
 /config.json
 /.env
 /npm-debug.log
+**/*.js
