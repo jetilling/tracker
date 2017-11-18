@@ -24,7 +24,8 @@ CREATE TABLE users (
   email_validated BOOLEAN,
   validation_token TEXT,
   phone_number TEXT,
-  level INTEGER
+  level INTEGER,
+  registration_complete BOOLEAN
 );
 
 CREATE TABLE time (

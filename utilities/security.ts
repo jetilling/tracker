@@ -18,7 +18,7 @@ export class Security {
     return new Promise((resolve, reject) => {
       argon2.verify(itemToCheck, itemToCheckAgainst).then(passwordIsCorrect => {
         resolve(passwordIsCorrect)
-      })
+      }).catch((err) => console.log(err))
     })
 
   }

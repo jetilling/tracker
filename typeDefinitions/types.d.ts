@@ -43,14 +43,17 @@ export interface IJobs {
 }
 
 export interface IRawUserObject {
-  id: number,
+  id?: number,
   email: string,
+  phone_number: string,
   password: string,
   firstname: string,
   lastname: string,
   activated: boolean,
-  email_validated: string,
+  email_validated: boolean,
   validation_token: string,
+  level: number,
+  registration_complete: boolean
 }
 
 export interface IUserObject {
@@ -58,6 +61,8 @@ export interface IUserObject {
   email: string,
   firstname: string,
   lastname: string,
+  email_validated: boolean,
+  activated: boolean,
   token: string
 }
 
