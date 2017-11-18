@@ -82,7 +82,7 @@ export class AuthService
           .map(this.common.extractData)
           .subscribe(
               res => {
-                this.setCookies(res, res.validated)
+                this.setCookies(res, res.email_validated)
               },
               err => {
                 if (err.status === 401) {
@@ -107,6 +107,11 @@ export class AuthService
                     .map(this.common.extractData)
                     .subscribe(
                           res => {
+                            console.log(res)
+                            if (res.email_validated){
+                              this.usersService.currentUser = res;
+                              this.setCookies(res, res.email_validated)
+                            }
                             this.usersService.currentUser = res;
                             this.router.navigate(['/validate'])
                           },

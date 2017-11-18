@@ -103,8 +103,9 @@ let addMember = (req: types.expressRequest, res: express.Response, next: express
             lastname: lastName,
             email: email,
             activated: 'FALSE',
-            email_validated: 'TRUE',
-            level: owner ? 1 : 2
+            email_validated: 'FALSE',
+            level: owner ? 1 : 2,
+            registration_complete: 'FALSE'
           }).then((user: types.IRawUserObject) => {
             
             /*

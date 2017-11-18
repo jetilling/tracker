@@ -9,7 +9,6 @@
 import * as express from 'express';
 import * as moment from 'moment';
 import * as jwt from 'jwt-simple';
-import * as bcrypt from 'bcrypt-nodejs';
 import * as randToken from 'rand-token';
 import * as dotenv from 'dotenv';
 
@@ -55,11 +54,14 @@ let createJWT = (user: types.IRawUserObject): string => {
  * @returns User object with type: types.UserObject
  */
 let getSafeUser = (req: types.expressRequest, user: types.IRawUserObject): types.IUserObject => {
+  console.log(user)
   let authorized_user = {
     id: user.id,
     email: user.email,
     firstname: user.firstname,
     lastname: user.lastname,
+    email_validated: user.email_validated,
+    activated: user.activated,
     token: createJWT(user)
   }
   req.user = authorized_user
@@ -112,7 +114,7 @@ let login = (req: types.expressRequest, res: express.Response) => {
       */
       else if (result) 
       { 
-        security.compare(req.body.password, result.password).then(passwordIsCorrect => {
+        security.compare(result.password, req.body.password).then(passwordIsCorrect => {
           if (passwordIsCorrect) res.send( getSafeUser(req, result) )
             else res.send({
               message: 'Invalid email and/or password'
@@ -142,58 +144,85 @@ let registerNewUser = (req: types.expressRequest, res: express.Response, next: e
       that email is already taken
   */
   db.users.findOne({ email: req.body.email }).then((result: types.IRawUserObject) => {
+    let token: string = randToken.generate(16);
 
-    if (result)
-    {
+    if (result && result.registration_complete) {
       res.status(409).send({ message: 'Email is already taken' })
     }
-    else 
-    { 
+    // else if (result && !result.registration_complete) {
+
+    // }
+    else { 
 
       /*
           Encrypt the provided password
           Insert new user information into the users table in the database
       */
-      let token: string = randToken.generate(16);
-
-      security.hash(req.body.password).then(resultingHash => {
-        let passwordHash = resultingHash
-
-        security.hash(req.body.phoneNumber).then(resultingHash => {
-          let phoneHash = resultingHash
-
-          /*
-              Insert the user into the database
-          */
-          db.users.insert({
-            email: req.body.email,
-            password: passwordHash, 
-            firstname: req.body.firstName, 
-            activated: 'FALSE',
-            email_validated: 'FALSE',
-            validation_token: token,
-            phone_number: phoneHash,
-            level: 2
-          }).then((result: types.IRawUserObject) => {
-
-              /* 
-                  Send the logged in user information to the front end
-              */
-              res.send( getSafeUser(req, result) )
-
-          }).catch((err: types.IError) => {
-            console.log(err)
-          })
-        })
+      hashPasswordAndAddUser(req, res, token, result).then((user: types.IRawUserObject) => {
+        res.send( getSafeUser(req, user) )
       })
+      
     }
   }).catch((err: types.IError) => {
     console.log(err)
   })
 }
 
-let registerAddedUser = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+/*=====================Helper Function==========================*/
 
+let hashPasswordAndAddUser = (req: types.expressRequest, res: express.Response, token: string, user: types.IRawUserObject): Promise<types.IRawUserObject> => {
+  return new Promise((resolve, reject) => {
+    let db = req.app.get('db');
+
+    security.hash(req.body.password).then((resultingHash: string) => {
+      let passwordHash: string = resultingHash
+
+      security.hash(req.body.phoneNumber).then((resultingHash: string) => {
+        let phoneHash: string = resultingHash
+
+        let newUser: types.IRawUserObject = {
+          email: req.body.email,
+          password: passwordHash, 
+          firstname: req.body.firstName, 
+          lastname: req.body.lastName,
+          activated: false,
+          email_validated: false,
+          validation_token: token,
+          phone_number: phoneHash,
+          level: 2,
+          registration_complete: true
+        }
+
+        if (user && !user.registration_complete) {
+          newUser.id = user.id
+          newUser.email_validated = true,
+          newUser.activated = true
+          db.users.update(newUser).then((result: types.IRawUserObject) => {
+            /* 
+                Send the logged in user information to the front end
+            */
+            resolve(result)
+            
+          }).catch((err: types.IError) => {
+            console.log(err)
+          })
+        }
+        else {
+          db.users.insert(newUser).then((result: types.IRawUserObject) => {
+            /* 
+                Send the logged in user information to the front end
+            */
+            resolve(result)
+            
+          }).catch((err: types.IError) => {
+            console.log(err)
+          })
+        }
+
+            
+      })
+    })
+  })
 }
 
 /*===========================Endpoints============================*/
