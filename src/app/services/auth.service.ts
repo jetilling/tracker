@@ -82,7 +82,7 @@ export class AuthService
           .map(this.common.extractData)
           .subscribe(
               res => {
-                this.setCookies(res, res.email_validated)
+                this.setCookies(res)
               },
               err => {
                 if (err.status === 401) {
@@ -107,13 +107,7 @@ export class AuthService
                     .map(this.common.extractData)
                     .subscribe(
                           res => {
-                            console.log(res)
-                            if (res.email_validated){
-                              this.usersService.currentUser = res;
-                              this.setCookies(res, res.email_validated)
-                            }
-                            this.usersService.currentUser = res;
-                            this.router.navigate(['/validate'])
+                              this.setCookies(res)
                           },
                           err => {
                             if (err.status === 409) {
@@ -205,14 +199,14 @@ export class AuthService
  * @param {IRegisterUser} res - Response from server
  * @param {boolean} validates - Trigger if user is new or not
  */
- setCookies(res: IRegisterUser, validated: boolean) 
+ setCookies(res: IRegisterUser) 
  {
     if (res && res.token) {
       document.cookie = `tracker=${res.token}; Path=/;`
       localStorage.setItem('trackerId', res.id+'');
       this.currentUser = res
+      this.router.navigate(['/dashboard'])
     }
-    validated ? this.router.navigate(['/dashboard']) : this.router.navigate(['/validate'])
  }
 
 }
