@@ -14,9 +14,10 @@ import * as express from 'express';
 /*  
     Import controllers
 */ 
-import * as auth from './controllers/authentication';
-import * as timeTracker from './controllers/timeTracker';
-import * as addJob from './controllers/addJob';
+import * as auth from './controllers/authentication/index';
+import * as time from './controllers/time/index';
+import * as jobs from './controllers/jobs/index';
+import * as teams from './controllers/teams/index';
 import * as textService from './controllers/textService';
 
 /*  
@@ -64,8 +65,8 @@ export class WebApi
   private configureRoutes(app: express.Express)
   {
     app.use('/auth', auth);
-    app.use('/time', timeTracker);
-    app.use('/job', addJob);
+    app.use('/time', time);
+    app.use('/job', jobs);
     app.use('/alert', textService)
   }
 
