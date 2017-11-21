@@ -50,14 +50,31 @@ CREATE TABLE teams (
   id SERIAL PRIMARY KEY,
   name VARCHAR(120),
   description TEXT
-)
+);
+
+-- Relational Tables
 
 CREATE TABLE users_to_teams (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES teams(id),
   user_id INTEGER REFERENCES users(id),
   owner BOOLEAN
-)
+);
+
+CREATE TABLE users_to_jobs (
+  id SERIAL PRIMARY KEY,
+  job_id INTEGER REFERENCES jobs(id),
+  user_id INTEGER REFERENCES users(id),
+  owner BOOLEAN,
+  customer BOOLEAN
+);
+
+CREATE TABLE teams_to_jobs (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  job_id INTEGER REFERENCES jobs(id)
+);
+
 
 -- Create statuses table
 CREATE TABLE statuses (

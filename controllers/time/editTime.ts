@@ -97,7 +97,7 @@ export class EditTIme
     let db = req.app.get('db')
     let startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY')
     
-    db.jobs.find().then((jobs: types.IJobsRaw) => {
+    db.jobs.find().then((jobs: types.IJobs) => {
         db.week_time.find({
           week_of: startOfWeek
         }).then((weekInfo: [types.IWeek]) => {
