@@ -4,11 +4,12 @@ import * as utilTypes from '../typeDefinitions/utilTypes'
 
 export class Time implements utilTypes.ITime {
 
-  findDifference = (startTime: string, endTime: string, differenceType: string): number => {
-    let start = moment(startTime)
-    let end = moment(endTime)
-    let duration = moment(end.diff(start)).format(differenceType)
-    return parseInt(duration)
+  findDifference = (startTime: string, endTime: string, differenceType: 'Q'): number => {
+    let start = moment(new Date(startTime))
+    let end = moment(new Date(endTime))
+    let duration = end.diff(start, differenceType)
+
+    return duration
   }
 
 }
