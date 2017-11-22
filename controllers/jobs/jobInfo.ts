@@ -39,7 +39,7 @@ export class JobInfo {
 
       // **TODO** Get all tables / data that are related to jobs
       
-      res.send(jobRes)
+      res.send({success: true, data: jobRes})
     }).catch((err: types.IError) => next(err))
   }
 
@@ -98,7 +98,7 @@ export class JobInfo {
 
     req.app.get('db').jobs.update(updatedJob)
     .then((jobRes: types.IJobs) => {
-      res.send(jobRes)
+      res.send({success: true, data: jobRes})
     }).catch((err: types.IError) => next(err))
             
   }

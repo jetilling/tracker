@@ -35,7 +35,7 @@ export class EditTIme
   clockIn = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
 
     let jobId = req.body.jobId;
-    let userId = req.user.id;
+    let userId = req.user;
     let current_time = req.body.time;
 
     req.app.get('db').time.insert({

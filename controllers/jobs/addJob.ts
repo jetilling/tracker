@@ -32,18 +32,18 @@ export class AddJob
 
     createJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-        let jobTitle = req.body.job;
+        let jobTitle = req.body.name;
         let description = req.body.description;
         let startDate = req.body.startDate;
         let endDate = req.body.endDate;
         let estimatedCost = req.body.cost;
-        let duration = this.time.findDifference(startDate, endDate, "s")
+        let duration = this.time.findDifference(startDate, endDate, 's')
 
         req.app.get('db').jobs.insert({
             name: jobTitle,
             description: description,
-            start_date: startDate,
-            end_date: endDate,
+            start_date: new Date(startDate),
+            end_date: new Date(endDate),
             estimated_duration: duration,
             estimated_cost: estimatedCost,
             total_seconds_worked: 0
@@ -56,7 +56,14 @@ export class AddJob
     }
 
     addTeamToJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        let teamId = req.body.teamId
+        let jobId = req.body.jobId
 
+        req.app.get('db').teams_to_jobs.insert({
+            team_id: teamId,
+            job_id: jobId
+        }).then(res.send({sucess: true}))
+        .catch((err: types.IError) => next(err))
     }
 
 

@@ -23,7 +23,7 @@ export class CreateTeam
   }
 
   createTeam = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
-    let teamName: string = req.body.teamName;
+    let teamName: string = req.body.name;
     let description: string = req.body.description;
 
     /*
@@ -39,7 +39,7 @@ export class CreateTeam
       */
       req.app.get('db').users_to_teams.insert({
         team_id: result.id,
-        user_id: req.user.id,
+        user_id: req.user,
         owner: 'TRUE'
       })
 
@@ -62,7 +62,7 @@ export class CreateTeam
       /*
         First we need to grab the team name so we can send it in the new member emails
       */
-      db.teams.findOne({ id: teamId}).then((team: types.ITeamRes) => {
+      db.teams.findOne({id: teamId}).then((team: types.ITeamRes) => {
 
         let teamName = team.name;
         let creatorName = req.user.firstname

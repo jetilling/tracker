@@ -18,12 +18,19 @@ import * as auth from './controllers/authentication/index';
 import * as time from './controllers/time/index';
 import * as jobs from './controllers/jobs/index';
 import * as teams from './controllers/teams/index';
+import * as users from './controllers/users/index';
 import * as textService from './controllers/textService';
+
+/*
+    Import Utilities
+*/
+import { Security } from './utilities/security'
 
 /*  
     Import type interfaces
 */ 
 import * as types from './typeDefinitions/types.d';
+import * as utilTypes from './typeDefinitions/utilTypes'
 
 /*
     Export WebApi Class
@@ -37,8 +44,9 @@ export class WebApi
   )
   {
     dotenv.config({ path: '.env' });
+    let security = new Security()
     this.configureMiddleware(app);
-    this.configureRoutes(app);
+    this.configureRoutes(app, security);
   }
 
   /**
@@ -62,11 +70,13 @@ export class WebApi
    * @description
    * @param app 
    */
-  private configureRoutes(app: express.Express)
+  private configureRoutes(app: express.Express, security: utilTypes.ISecurity)
   {
     app.use('/auth', auth);
-    app.use('/time', time);
-    app.use('/job', jobs);
+    app.use('/time', security.ensureAuthenticated, time);
+    app.use('/job', security.ensureAuthenticated, jobs);
+    app.use('/team', security.ensureAuthenticated, teams);
+    app.use('/user', security.ensureAuthenticated, users);
     app.use('/alert', textService)
   }
 
