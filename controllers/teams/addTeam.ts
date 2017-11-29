@@ -25,6 +25,8 @@ export class CreateTeam
   createTeam = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
     let teamName: string = req.body.name;
     let description: string = req.body.description;
+    
+    // **TODO** Check if the user is level one before they can add a team
 
     /*
       First the team is created
@@ -65,7 +67,6 @@ export class CreateTeam
       db.teams.findOne({id: teamId}).then((team: types.ITeamRes) => {
 
         let teamName = team.name;
-        let creatorName = req.user.firstname
 
         /*
           See if user exists

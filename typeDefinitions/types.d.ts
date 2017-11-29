@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 export interface expressRequest extends express.Request {
-  user: IUserObject
+  user: number
 }
 
 export interface IError {
@@ -51,14 +51,20 @@ export interface IRawUserObject {
   registration_complete: boolean
 }
 
-export interface IUserObject {
+export interface IRetrievedUser {
+  success: boolean,
+  data: ISafeUserObject
+}
+
+export interface ISafeUserObject {
   id: number,
   email: string,
   firstname: string,
   lastname: string,
   email_validated: boolean,
   activated: boolean,
-  token: string
+  level: number,
+  token?: string
 }
 
 export interface IAddMemberRes {
@@ -69,4 +75,11 @@ export interface ITeamRes {
   id: number,
   name: string,
   description: string
+}
+
+export interface ITeamToUsers {
+  id: number,
+  team_id: number,
+  user_id: number,
+  owner: boolean
 }

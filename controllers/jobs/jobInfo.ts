@@ -33,9 +33,16 @@ export class JobInfo {
   getJobInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
     let jobId = req.body.id;
+    let db = req.app.get('db')
 
-    req.app.get('db').jobs.findOne({id: jobId})
+    db.jobs.findOne({id: jobId})
     .then((jobRes: types.IJobs) => {
+
+      // db.time.find({job_id: jobId})
+      // .then((timeRes: types.ITimeRaw) => {
+
+      //   db.
+      // })
 
       // **TODO** Get all tables / data that are related to jobs
       
