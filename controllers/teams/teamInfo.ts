@@ -29,7 +29,7 @@ export class TeamInfo
       fields: ['name'], 
       term: teamName
     }, {stream: true}
-    ).then((teamStream: types.ITeamRes) => {
+    ).then((teamStream: types.ITeam) => {
       res.send({success: true, data: teamStream})
     });
     

@@ -47,7 +47,7 @@ export class UserInfo {
     let userInfo = await this.pullUserInfo(req, req.user)
     let user = userInfo.data
 
-    if (user.level === 1) {
+    if (user.level === 1 || user.level === 2) {
       db.users_to_teams.findOne({user_id: user.id})
       .then((teamToUsers: types.ITeamToUsers) => {
         db.users_to_teams.find({team_id: teamToUsers.team_id})
@@ -64,7 +64,7 @@ export class UserInfo {
           
         }).catch((err: types.IError) => {throw err})
       }).catch((err: types.IError) => {throw err})
-    } else if (user.level === 2) {
+    } else if (user.level === 3) {
       if (userIdToSearchFor == req.user) res.send({success: true, data: user})
       else res.send({success: false, message: 'Unauthorized'})
     }
@@ -90,7 +90,7 @@ export class UserInfo {
   /**
    * @description Edits the user based on the property that needs to be updated
    */
-  editUserInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  editUserInfo = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
     interface IUpdatedUser {
       id: number,
       firstname?: string,
@@ -106,25 +106,27 @@ export class UserInfo {
       id: userId
     }
 
-    switch (propertyUpdated) {
-      case 'firstname':
-        updatedUser.firstname = valueUpdated;
-        break;
+    if (req.user === userId) {
+      switch (propertyUpdated) {
+        case 'firstname':
+          updatedUser.firstname = valueUpdated;
+          break;
 
-      case 'lastname':
-        updatedUser.lastname = valueUpdated;
-        break;
+        case 'lastname':
+          updatedUser.lastname = valueUpdated;
+          break;
 
-      case 'email':
-        updatedUser.email = valueUpdated;
-        break;
+        case 'email':
+          updatedUser.email = valueUpdated;
+          break;
 
-      case 'phone_number':
-        updatedUser.phone_number = valueUpdated;
-        break;
+        case 'phone_number':
+          updatedUser.phone_number = valueUpdated;
+          break;
 
-      default:
-        res.send(`Error: ${propertyUpdated} doesn't match any user properties.`)
+        default:
+          res.send(`Error: ${propertyUpdated} doesn't match any user properties.`)
+      }
     }
 
     req.app.get('db').users.update(updatedUser)

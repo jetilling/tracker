@@ -71,7 +71,7 @@ export interface IAddMemberRes {
   
 }
 
-export interface ITeamRes {
+export interface ITeam {
   id: number,
   name: string,
   description: string
@@ -82,4 +82,17 @@ export interface ITeamToUsers {
   team_id: number,
   user_id: number,
   owner: boolean
+}
+
+export interface IOrganization {
+    id: number,
+    name: string,
+    description: string,
+    start_date: Date
+}
+
+export interface ITeamToOrganization {
+  id: number,
+  team_id: number,
+  organization_id: number
 }

@@ -1,5 +1,7 @@
 import * as express from 'express';
 
+import * as types from './types';
+
 export interface ISecurity {
   compare: (hashedPassword: string, userPassword: string) => Promise<boolean>,
   hash: (userPassword: string) => Promise<string>,
@@ -8,4 +10,8 @@ export interface ISecurity {
 
 export interface ITime {
   findDifference: (startTime: string, endTime: string, differenceType: string) => number
+}
+
+export interface IUserInfo {
+  grabSafeUserInfo: (req: express.Request) => Promise<types.ISafeUserObject>
 }
