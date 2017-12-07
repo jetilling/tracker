@@ -1,14 +1,3 @@
-CREATE TABLE jobs (
-  id SERIAL PRIMARY KEY,
-  name TEXT,
-  description TEXT,
-  start_date TIMESTAMP,
-  end_date TIMESTAMP,
-  estimated_duration INTEGER,
-  estimated_cost INTEGER,
-  total_seconds_worked INTEGER
-);
-
 CREATE TABLE verify (
   id SERIAL PRIMARY KEY,
   phrase TEXT
@@ -25,8 +14,31 @@ CREATE TABLE users (
   validation_token TEXT,
   phone_number TEXT,
   level INTEGER,
-  registration_complete BOOLEAN
+  registration_complete BOOLEAN,
+  start_date TIMESTAMP,
+  last_updated TIMESTAMP
 );
+
+CREATE TABLE jobs (
+  id SERIAL PRIMARY KEY,
+  name TEXT,
+  description TEXT,
+  start_date TIMESTAMP,
+  end_date TIMESTAMP,
+  estimated_duration INTEGER,
+  estimated_cost INTEGER,
+  total_seconds_worked INTEGER,
+  created_on TIMESTAMP,
+  creator INTEGER REFERENCES users(id)
+);
+
+CREATE TABLE organizations (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(250),
+  description TEXT,
+  created_on TIMESTAMP,
+  creator INTEGER REFERENCES users(id)
+)
 
 CREATE TABLE time (
   id SERIAL PRIMARY KEY,
@@ -49,10 +61,18 @@ CREATE TABLE week_time (
 CREATE TABLE teams (
   id SERIAL PRIMARY KEY,
   name VARCHAR(120),
-  description TEXT
+  description TEXT,
+  created_on TIMESTAMP,
+  creator INTEGER REFERENCES users(id)
 );
 
 -- Relational Tables
+CREATE TABLE users_to_organizations (
+  id SERIAL PRIMARY KEY,
+  business_id INTEGER REFERENCES organizations(id)
+  user_id INTEGER REFERENCES users(id)
+  owner BOOLEAN
+)
 
 CREATE TABLE users_to_teams (
   id SERIAL PRIMARY KEY,
@@ -75,6 +95,17 @@ CREATE TABLE teams_to_jobs (
   job_id INTEGER REFERENCES jobs(id)
 );
 
+CREATE TABLE teams_to_organizations (
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  organization_id INTEGER REFERENCES organizations(id)
+)
+
+CREATE TABLE jobs_to_organizations (
+  id SERIAL PRIMARY KEY,
+  job_id INTEGER REFERENCES jobs(id),
+  organization_id INTEGER REFERENCES organizations(id)
+)
 
 -- Create statuses table
 CREATE TABLE statuses (

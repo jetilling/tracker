@@ -55,7 +55,7 @@ export class Authenticate
    * @param user types.RawUserObject
    * @returns User object with type: types.UserObject
    */
-  getSafeUser = (req: types.expressRequest, user: types.IRawUserObject): types.IUserObject => {
+  getSafeUser = (req: types.expressRequest, user: types.IRawUserObject): types.ISafeUserObject => {
     let authorized_user = {
       id: user.id,
       email: user.email,
@@ -63,9 +63,9 @@ export class Authenticate
       lastname: user.lastname,
       email_validated: user.email_validated,
       activated: user.activated,
+      level: user.level,
       token: this.createJWT(user)
     }
-    req.user = authorized_user
     return authorized_user
   }
 

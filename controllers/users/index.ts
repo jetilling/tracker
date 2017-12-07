@@ -17,6 +17,9 @@ let userInfo = new UserInfo()
     Endpoints
 */
 userRouter.get('/searchUser/:term', userInfo.searchUser);
+userRouter.get('/userInfo/:userId', userInfo.getUserInfo);
+userRouter.get('/loggedInUser', userInfo.getLoggedInUserInfo);
+userRouter.put('/editUser', userInfo.editUserInfo);
 
 
 export = userRouter;
