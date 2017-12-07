@@ -81,7 +81,7 @@ export interface ITeamToUsers {
   id: number,
   team_id: number,
   user_id: number,
-  owner: boolean
+  level: number
 }
 
 export interface IOrganization {
@@ -94,5 +94,11 @@ export interface IOrganization {
 export interface ITeamToOrganization {
   id: number,
   team_id: number,
+  organization_id: number
+}
+
+export interface IUserToOrganization {
+  id: number,
+  user_id: number,
   organization_id: number
 }

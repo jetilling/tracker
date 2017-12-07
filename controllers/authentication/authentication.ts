@@ -190,7 +190,7 @@ export class Authenticate
             email_validated: false,
             validation_token: token,
             phone_number: phoneHash,
-            level: 2,
+            level: 1,
             registration_complete: true
           }
 

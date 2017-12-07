@@ -54,7 +54,7 @@ export class CreateTeam
         req.app.get('db').users_to_teams.insert({
           team_id: result.id,
           user_id: req.user,
-          owner: 'TRUE'
+          level: 1
         })
 
         res.status(200).send({success: true})
@@ -71,7 +71,7 @@ export class CreateTeam
     let firstName: string = req.body.firstName;
     let lastName: string = req.body.lastName;
     let email: string = req.body.email;
-    let owner: boolean = req.body.owner;
+    let level: number = req.body.owner;
 
 
     if (teamId) {
@@ -86,7 +86,8 @@ export class CreateTeam
           let teamName = team.name;
 
           /*
-            Then we need to grab the 
+            Then we need to grab the organization associated with the team.
+            We'll use this to associate the user with the organization if they aren't already
           */
           db.teams_to_organizations.findOne({team_id: teamId}).then((teamToOrganization: types.ITeamToOrganization) => {
 
@@ -97,24 +98,18 @@ export class CreateTeam
               /*
                 See if user exists
               */
-              db.users.findOne({ email: email }).then((result: types.IRawUserObject) => {
+              db.users.findOne({ email: email }).then( async (result: types.IRawUserObject) => {
                 
                 /*
-                  If the user exists insert them in the users_to_team table.
+                  If the user exists insert them in the users_to_team table and the users_to_organization table.
                   Send the user an email stating they have been added
                 */
                 if (result) {
-                  db.users_to_team.insert({
-                    team_id: teamId,
-                    user_id: result.id,
-                    owner: owner
-                  }).then((response: types.IAddMemberRes) => {
 
-                      // **TODO** We need to notify user via email they were added to group
+                  let userAdded = await this.addUsersToTeamAndOrganization(req, req.user, teamId, organizationId, level)
 
-                      res.status(200).send({success: true})
+                  res.send(userAdded)
 
-                  }).catch((err: types.IError) => next(err))
                 }
 
                 /*
@@ -133,33 +128,18 @@ export class CreateTeam
                     email: email,
                     activated: 'FALSE',
                     email_validated: 'FALSE',
-                    level: owner ? 2 : 3,
+                    level: level ? 2 : 3,
                     registration_complete: 'FALSE'
-                  }).then((user: types.IRawUserObject) => {
+                  }).then( async (user: types.IRawUserObject) => {
                     
                     /*
                       Add newly created user to the team
                       Send the user an email stating they have been added
                     */
-                    db.users_to_team.insert({
-                      team_id: teamId,
-                      user_id: user.id,
-                      owner: owner
-                    }).then(() => {
+                    let userAdded = await this.addUsersToTeamAndOrganization(req, req.user, teamId, organizationId, level)
 
-                      db.users_to_organization.insert({
-                        organization_id: organizationId,
-                        user_id: user.id,
-                        owner: false
-                      })
+                    res.send(userAdded)
 
-                      // **TODO** We need to notify user via email they were added to group
-                      // This email should tell them they were added to the group, but it should also say they need to
-                      // create/activate their account
-
-                      res.status(200).send({success: true})
-
-                    }).catch((err: types.IError) => next(err))
                   }).catch((err: types.IError) => next(err))
                 }
               })
@@ -174,6 +154,31 @@ export class CreateTeam
   }
 
 /*=====================Helper Function==========================*/
+
+  private addUsersToTeamAndOrganization = (req: express.Request, userId: number, teamId: number, organizationId: number, level: number) => {
+    return new Promise((resolve, reject) => {
+      let db = req.app.get('db');
+      db.users_to_team.insert({
+        team_id: teamId,
+        user_id: userId,
+        level: level
+      }).then((response: types.IAddMemberRes) => {
+        
+        db.users_to_organization.insert({
+          organization_id: organizationId,
+          user_id: userId,
+          level: 2
+        }).then((userToOrganization: types.IUserToOrganization) => {
+          
+          // **TODO** We need to notify user via email they were added to group
+
+          resolve({success: true})
+
+        }).catch((err: types.IError) => reject(err))
+
+      }).catch((err: types.IError) => reject(err))
+    })
+  }
 
 }
 
