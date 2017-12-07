@@ -11,7 +11,7 @@ import * as moment from 'moment';
 /*
     Import any application utilities
 */
-import { Time } from '../../utilities/time';
+import { UserInfo } from '../../utilities/userInfo';
 
 /*
     Import type interfaces
@@ -23,26 +23,39 @@ import * as utilTypes from '../../typeDefinitions/utilTypes'
 
 export class AddOrganization
 {   
-    time: utilTypes.ITime
+    userUtil: utilTypes.IUserInfo;
 
     constructor(){
         dotenv.config({ path: '.env' });
-        this.time = new Time()
     }
 
-    createoOrganization = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+    createoOrganization = async (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
 
-        let jobTitle = req.body.name;
+        let organizationName = req.body.name;
         let description = req.body.description;
-        let startDate = req.body.startDate;
+        let created = req.body.created;
+        this.userUtil = new UserInfo(req.user)
+        let userInfo = await this.userUtil.grabSafeUserInfo(req)
 
-        req.app.get('db').jobs.insert({
-            name: jobTitle,
-            description: description,
-            start_date: new Date(startDate),
-            creator: req.user
-        }).then(res.status(200).send({success: true}))
-        .catch((err: types.IError) => next(err))
+        if (userInfo && userInfo.level == 1) {
+            
+            req.app.get('db').organizations.insert({
+                name: organizationName,
+                description: description,
+                created_on: new Date(created),
+                creator: req.user
+            }).then(async (organization: types.IOrganization) => {
+
+                /*
+                    Here we want to add the creater to the organization
+                */
+                await this.addMemberToOrganization(req, userInfo, organization, true)
+
+                res.status(200).send({success: true})
+
+            }).catch((err: types.IError) => next(err))
+        }
+
     }
 
     addMemberToOrganization = (req: express.Request, userInfo: types.ISafeUserObject, organizationInfo: types.IOrganization, owner: boolean) => {

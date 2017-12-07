@@ -38,7 +38,15 @@ CREATE TABLE organizations (
   description TEXT,
   created_on TIMESTAMP,
   creator INTEGER REFERENCES users(id)
-)
+);
+
+CREATE TABLE week_time (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  week_starting TIMESTAMP,
+  week_ending TIMESTAMP,
+  total_time_for_week INTEGER
+);
 
 CREATE TABLE time (
   id SERIAL PRIMARY KEY,
@@ -48,14 +56,6 @@ CREATE TABLE time (
   clock_in TIMESTAMP,
   clock_out TIMESTAMP,
   total_time TEXT
-);
-
-CREATE TABLE week_time (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id),
-  week_starting TIMESTAMP,
-  week_ending TIMESTAMP,
-  total_time_for_week INTEGER
 );
 
 CREATE TABLE teams (
@@ -69,23 +69,23 @@ CREATE TABLE teams (
 -- Relational Tables
 CREATE TABLE users_to_organizations (
   id SERIAL PRIMARY KEY,
-  business_id INTEGER REFERENCES organizations(id)
-  user_id INTEGER REFERENCES users(id)
-  owner BOOLEAN
-)
+  organization_id INTEGER REFERENCES organizations(id),
+  user_id INTEGER REFERENCES users(id),
+  level BOOLEAN
+);
 
 CREATE TABLE users_to_teams (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES teams(id),
   user_id INTEGER REFERENCES users(id),
-  owner BOOLEAN
+  level BOOLEAN
 );
 
 CREATE TABLE users_to_jobs (
   id SERIAL PRIMARY KEY,
   job_id INTEGER REFERENCES jobs(id),
   user_id INTEGER REFERENCES users(id),
-  owner BOOLEAN,
+  level BOOLEAN,
   customer BOOLEAN
 );
 
@@ -99,13 +99,13 @@ CREATE TABLE teams_to_organizations (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES teams(id),
   organization_id INTEGER REFERENCES organizations(id)
-)
+);
 
 CREATE TABLE jobs_to_organizations (
   id SERIAL PRIMARY KEY,
   job_id INTEGER REFERENCES jobs(id),
   organization_id INTEGER REFERENCES organizations(id)
-)
+);
 
 -- Create statuses table
 CREATE TABLE statuses (
