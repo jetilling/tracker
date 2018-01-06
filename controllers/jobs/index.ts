@@ -18,7 +18,7 @@ let jobInfo = new JobInfo()
 /*
     Endpoints
 */
-jobRouter.get('/jobInfo', jobInfo.getJobInfo);
+jobRouter.get('/jobInfo/:id', jobInfo.getJobInfo);
 jobRouter.put('/editJob', jobInfo.editJob);
 jobRouter.post('/addJob', addJob.createJob);
 jobRouter.post('/addTeamToJob', addJob.addTeamToJob);

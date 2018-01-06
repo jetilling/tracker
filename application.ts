@@ -86,7 +86,7 @@ export class WebApi
    */
   public run() 
   {
-    this.app.listen(this.port, () => {
+    this.app.listen(this.port, "0.0.0.0", () => {
       console.log('Listening on ', this.port)
     }) 
   }

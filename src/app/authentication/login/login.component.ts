@@ -1,9 +1,13 @@
-//----Angular Imports----//
+/*
+    Angular Imports
+*/
 import { Component }                                          from '@angular/core';
 import {FormBuilder, FormControl, Validators, FormGroup}      from '@angular/forms';
 import { Router }                                             from '@angular/router';
 
-//----Other Imports----//
+/*
+    Other imports
+*/
 import { IRegisterUser }                                      from '../../interfaces';
 import { AuthService }                                        from '../../services/auth.service';
 
@@ -55,6 +59,7 @@ export class LoginComponent
   login() {
     this.loading = true;
     this.auth.login(this.model)
+    console.log(stuff)
   }
 
 }

@@ -11,9 +11,9 @@ export class CommonFunctions {
    */
   jwt() 
   {
-    let opusUser = document.cookie.split("Opus_User=")[1];
-    if (opusUser && opusUser.split('.').length === 3) {
-        let headers = new Headers({ 'Authorization': opusUser});
+    let userCookie = document.cookie.split("tracker=")[1];
+    if (userCookie && userCookie.split('.').length === 3) {
+        let headers = new Headers({ 'Authorization': userCookie});
         return new RequestOptions({ headers: headers });
     }
   }

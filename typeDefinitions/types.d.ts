@@ -5,7 +5,7 @@ export interface expressRequest extends express.Request {
 }
 
 export interface IError {
-
+  error?: any
 }
 
 export interface ITimeRaw {

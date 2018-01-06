@@ -22,6 +22,7 @@ export interface IRegisterUser {
   phoneNumber: string;
   password: string;
   token?: string;
+  validated?: boolean
 }
 
 /**
