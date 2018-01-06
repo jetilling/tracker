@@ -43,6 +43,11 @@ export class AuthService
   emailOrPasswordInvalid: boolean;
 
   /**
+   * Whether or not user cookie was successfully set
+   */
+  successfullySetCookie: boolean;
+
+  /**
    * Gets the current user from the users service
    */
   get currentUser(): IUsersObject {
@@ -63,7 +68,7 @@ export class AuthService
    */
   getUser(): Observable<string> 
   {
-    const url = '/api/me'
+    const url = '/user/loggedInUser'
     return this.http.get(url, this.common.jwt())
         .map(this.common.extractData)
         .catch(this.common.handleError);
@@ -82,7 +87,11 @@ export class AuthService
           .map(this.common.extractData)
           .subscribe(
               res => {
-                this.setCookies(res)
+                let successfullySetCookie: boolean = this.setCookies(res);
+                if (successfullySetCookie) {
+                  this.successfullySetCookie = true;
+                  this.router.navigate(['/dashboard'])
+                }
               },
               err => {
                 if (err.status === 401) {
@@ -107,7 +116,8 @@ export class AuthService
                     .map(this.common.extractData)
                     .subscribe(
                           res => {
-                              this.setCookies(res)
+                            let setCookie: boolean = this.setCookies(res);
+                            if (setCookie) this.successfullySetCookie = true
                           },
                           err => {
                             if (err.status === 409) {
@@ -119,11 +129,11 @@ export class AuthService
   /**
    * Logs User out
    */
-  logout(): boolean 
+  logout() 
   {
     localStorage.removeItem('trackerId')
     document.cookie = 'tracker=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-    return true;
+    this.router.navigate(['/login'])
   }
 
   /**
@@ -205,7 +215,11 @@ export class AuthService
       document.cookie = `tracker=${res.token}; Path=/;`
       localStorage.setItem('trackerId', res.id+'');
       this.currentUser = res
-      this.router.navigate(['/dashboard'])
+      return true
+    }
+    else if (res && !res.validated) {
+      // TODO: Do something with this..
+      console.log('User has not validated their email!')
     }
  }
 

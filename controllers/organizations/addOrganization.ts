@@ -29,7 +29,7 @@ export class AddOrganization
         dotenv.config({ path: '.env' });
     }
 
-    createoOrganization = async (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+    createOrganization = async (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
 
         let organizationName = req.body.name;
         let description = req.body.description;

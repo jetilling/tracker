@@ -32,7 +32,7 @@ export class JobInfo {
 
   getJobInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    let jobId = req.body.id;
+    let jobId = req.params.id;
     let db = req.app.get('db')
 
     db.jobs.findOne({id: jobId})

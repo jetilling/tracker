@@ -10,6 +10,7 @@ import { HomeComponent }                        from './landing/home/home.compon
 import { LoginComponent }                       from './authentication/login/login.component';
 import { RegisterComponent }                    from './authentication/register/register.component';
 import { DashboardComponent }                   from './dashboard/dashboard.component';
+import { CreateOrganizationComponent }          from './organizations/createOrganization/create-organization.component';
 
 //--------Services---------//
 import { AuthService }                          from './services/auth.service';
@@ -34,6 +35,7 @@ import { AppRoutingModule }                     from './app-routing.module';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
+    CreateOrganizationComponent,
   ],
   providers: [
     AuthService,

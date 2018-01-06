@@ -33,6 +33,13 @@ export class RegisterComponent
     return this.auth.emailIsAlreadyTaken;
   }
 
+  /**
+   * Gets successfullySetCookie from auth service
+   */
+  get successfullySetCookie(): boolean {
+    return this.auth.successfullySetCookie;
+  }
+
   //-----------Methods------------//
 
   /**
