@@ -17,6 +17,6 @@ let addOrganization = new AddOrganization();
 /*
     Endpoints
 */
-organizationRouter.get('/createOrganization', addOrganization.createOrganization);
+organizationRouter.post('/createOrganization', addOrganization.createOrganization);
 
 export = organizationRouter

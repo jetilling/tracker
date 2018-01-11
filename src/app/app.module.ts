@@ -16,6 +16,7 @@ import { CreateOrganizationComponent }          from './organizations/createOrga
 import { AuthService }                          from './services/auth.service';
 import { CommonFunctions }                      from './services/commonFunctions.service';
 import { UsersService }                         from './services/users.service';
+import { OrganizationService }                  from './services/organizations.service';
 
 //--------Routing---------//
 import { AppRoutingModule }                     from './app-routing.module';
@@ -40,7 +41,8 @@ import { AppRoutingModule }                     from './app-routing.module';
   providers: [
     AuthService,
     CommonFunctions,
-    UsersService
+    UsersService,
+    OrganizationService
   ],
   bootstrap: [ MainComponent ]
 })

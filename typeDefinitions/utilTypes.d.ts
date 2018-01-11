@@ -15,3 +15,11 @@ export interface ITime {
 export interface IUserInfo {
   grabSafeUserInfo: (req: express.Request) => Promise<types.ISafeUserObject>
 }
+
+export interface ITeamInfo {
+  grabTeamInfo: (req: express.Request) => Promise<types.ITeam>
+}
+
+export interface IOrganizationInfo {
+  grabOrganizationInfo: (req: express.Request) => Promise<types.IOrganization>
+}

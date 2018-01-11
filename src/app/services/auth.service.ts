@@ -43,9 +43,10 @@ export class AuthService
   emailOrPasswordInvalid: boolean;
 
   /**
-   * Whether or not user cookie was successfully set
+   * Whether or not we should ask the user to create an organization. 
+   * This depends on if a user is level 1 or not
    */
-  successfullySetCookie: boolean;
+  askUserToCreateOrganization: boolean;
 
   /**
    * Gets the current user from the users service
@@ -89,7 +90,6 @@ export class AuthService
               res => {
                 let successfullySetCookie: boolean = this.setCookies(res);
                 if (successfullySetCookie) {
-                  this.successfullySetCookie = true;
                   this.router.navigate(['/dashboard'])
                 }
               },
@@ -117,7 +117,7 @@ export class AuthService
                     .subscribe(
                           res => {
                             let setCookie: boolean = this.setCookies(res);
-                            if (setCookie) this.successfullySetCookie = true
+                            if (setCookie && res.level == 1) this.askUserToCreateOrganization = true
                           },
                           err => {
                             if (err.status === 409) {
