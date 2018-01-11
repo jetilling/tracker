@@ -5,7 +5,7 @@
                 <span class="card-title login-font">Login</span>
                 <div class="row">
                     <div class="input-field col s12 login-email" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
-                            <input type="text" class="login-email-input" name="email" id="email" [(ngModel)]="model.email" #email="ngModel" required />
+                            <input type="text" class="login-email-input" name="email" id="email" [(ngModel)]="model.email" #email="ngModel" required autofocus/>
                             <label class="login-email-label login-font" for="email">Email</label>
                             <div *ngIf="f.submitted && !email.valid" class="login-email-error">Email is required</div>
                     </div> 

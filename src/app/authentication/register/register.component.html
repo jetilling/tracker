@@ -1,5 +1,5 @@
 <div class="row">
-    <div *ngIf="!successfullySetCookie">
+    <div *ngIf="!askUserToCreateOrganization">
         <form class="register-form" name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
             <div class="row">
                 <div class="col s4 offset-m4">
@@ -51,7 +51,7 @@
             </div>
         </form>
     </div>
-    <div *ngIf="successfullySetCookie">
+    <div *ngIf="askUserToCreateOrganization">
         <create-organization></create-organization>
     </div>
     

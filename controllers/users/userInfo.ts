@@ -17,7 +17,6 @@ import * as moment from 'moment';
     Import type interfaces
 */
 import * as types from '../../typeDefinitions/types';
-import { ISafeUserObject } from '../../typeDefinitions/types';
 
 /*=====================Class==========================*/
 
@@ -146,7 +145,7 @@ export class UserInfo {
       
       req.app.get('db').users.findOne({id: userId})
       .then((user: types.IRawUserObject) => {
-        let userToSend: ISafeUserObject = {
+        let userToSend: types.ISafeUserObject = {
           id: user.id,
           email: user.email,
           firstname: user.firstname,

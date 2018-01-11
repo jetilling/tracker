@@ -16,6 +16,7 @@ let auth = new Authenticate()
 /*
     Endpoints
 */
+authRouter.get('/findOrganizations', auth.findTeamsAndOrganizationsByUserEmail)
 authRouter.post('/login', auth.login);
 authRouter.post('/register', auth.registerNewUser);
 

@@ -71,7 +71,7 @@ CREATE TABLE users_to_organizations (
   id SERIAL PRIMARY KEY,
   organization_id INTEGER REFERENCES organizations(id),
   user_id INTEGER REFERENCES users(id),
-  level BOOLEAN
+  owner BOOLEAN
 );
 
 CREATE TABLE users_to_teams (

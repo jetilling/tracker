@@ -4,7 +4,7 @@ import { Router }                       from '@angular/router';
 
 //----Other Imports----//
 import { IRegisterUser }                from '../../interfaces';
-import { AuthService}                   from '../../services/auth.service';
+import { AuthService }                   from '../../services/auth.service';
 
 @Component({
   moduleId: module.id,
@@ -36,8 +36,8 @@ export class RegisterComponent
   /**
    * Gets successfullySetCookie from auth service
    */
-  get successfullySetCookie(): boolean {
-    return this.auth.successfullySetCookie;
+  get askUserToCreateOrganization(): boolean {
+    return this.auth.askUserToCreateOrganization;
   }
 
   //-----------Methods------------//

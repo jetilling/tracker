@@ -19,6 +19,7 @@ import * as time from './controllers/time/index';
 import * as jobs from './controllers/jobs/index';
 import * as teams from './controllers/teams/index';
 import * as users from './controllers/users/index';
+import * as organizations from './controllers/organizations/index';
 import * as textService from './controllers/textService';
 
 /*
@@ -77,6 +78,7 @@ export class WebApi
     app.use('/job', security.ensureAuthenticated, jobs);
     app.use('/team', security.ensureAuthenticated, teams);
     app.use('/user', security.ensureAuthenticated, users);
+    app.use('/organization', security.ensureAuthenticated, organizations)
     app.use('/alert', textService)
   }
 

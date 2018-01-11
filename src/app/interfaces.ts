@@ -26,7 +26,7 @@ export interface IRegisterUser {
 }
 
 /**
-* Class for Users list
+* Interface for Users list
 */
 export interface IUsersObject {
   id: number;
@@ -34,4 +34,13 @@ export interface IUsersObject {
   firstName: string;
   phoneNumber: string;
   login_dates?: Date[];
+}
+
+/**
+ * Interface for creating organization
+ */
+export interface ICreateOrganization {
+  name: string,
+  description: string,
+  created?: Date
 }

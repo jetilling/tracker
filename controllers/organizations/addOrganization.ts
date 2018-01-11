@@ -36,22 +36,24 @@ export class AddOrganization
         let created = req.body.created;
         this.userUtil = new UserInfo(req.user)
         let userInfo = await this.userUtil.grabSafeUserInfo(req)
+        let newOrganization = {
+            name: organizationName,
+            description: description,
+            created_on: new Date(created),
+            creator: req.user
+        }
 
         if (userInfo && userInfo.level == 1) {
             
-            req.app.get('db').organizations.insert({
-                name: organizationName,
-                description: description,
-                created_on: new Date(created),
-                creator: req.user
-            }).then(async (organization: types.IOrganization) => {
+            req.app.get('db').organizations.insert(newOrganization)
+            .then(async (organization: types.IOrganization) => {
 
                 /*
                     Here we want to add the creater to the organization
                 */
                 await this.addMemberToOrganization(req, userInfo, organization, true)
 
-                res.status(200).send({success: true})
+                res.status(200).send({success: true, data: organization})
 
             }).catch((err: types.IError) => next(err))
         }
@@ -68,7 +70,7 @@ export class AddOrganization
             organization_id: organizationId,
             owner: owner
             }).then((organization: types.IOrganization) => {
-            return {sucess: true}
+                return {sucess: true}
             }).catch((err: types.IError) => {throw err})
         }
     }

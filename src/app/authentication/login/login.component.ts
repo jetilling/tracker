@@ -59,7 +59,6 @@ export class LoginComponent
   login() {
     this.loading = true;
     this.auth.login(this.model)
-    console.log(stuff)
   }
 
 }

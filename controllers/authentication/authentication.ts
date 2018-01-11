@@ -13,12 +13,16 @@ import * as dotenv from 'dotenv';
     Import any application utilities
 */
 import { Security } from '../../utilities/security';
+import { TeamInfo } from '../../utilities/teamInfo';
+import { OrganizationInfo } from '../../utilities/organizationInfo';
 
 /*
     Import type interfaces
 */
 import * as types from '../../typeDefinitions/types';
 import * as utilTypes from '../../typeDefinitions/utilTypes'
+import { ITeam, IOrganization, ITeamToUsers } from '../../typeDefinitions/types';
+import { templateJitUrl } from '@angular/compiler';
 
 /*=====================Class==========================*/
 
@@ -26,6 +30,8 @@ export class Authenticate
 {
 
   security: utilTypes.ISecurity;
+  teamUtil: utilTypes.ITeamInfo;
+  organizationUtil: utilTypes.IOrganizationInfo;
 
   constructor(){
     dotenv.config({ path: '.env' });
@@ -150,9 +156,9 @@ export class Authenticate
       if (result && result.registration_complete) {
         res.status(409).send({ message: 'Email is already taken' })
       }
-      // else if (result && !result.registration_complete) {
+      else if (result && !result.registration_complete) {
 
-      // }
+      }
       else { 
 
         /*
@@ -169,7 +175,85 @@ export class Authenticate
     })
   }
 
+  /**
+   * Find User's Teams and Organizations by the user's email
+   * 
+   * @description Here we use the user's email to find any teams and 
+   * organizations they've been added to.
+   * 
+   * NOTE: I wrote functionality to check for teams, but I think 
+   * organizations are what are important, as they are the top level
+   */
+  findTeamsAndOrganizationsByUserEmail = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    interface IResults {
+      success: boolean,
+      organizations?: types.IOrganization,
+      message?: string
+    }
+    let db = req.app.get('db')
+    let email = req.body.email
+    let lastName = req.body.lastName
+    let teamsAndOrganizations: Promise<ITeam[]>
+    let resultToSend: IResults
+
+    db.users.findOne({email: req.body.email, lastname: req.body.lastName})
+    .then(async (result: types.IRawUserObject) => {
+      
+      if (result) {
+        teamsAndOrganizations = Promise.all([
+          await this.grabTeamInfo(req, res, result),
+          await this.grabOrganizationInfo(req, res, result)
+        ])
+
+        if (teamsAndOrganizations) {
+          resultToSend.success = true;
+          resultToSend.organizations = teamsAndOrganizations[1]
+          res.send(resultToSend)
+        } else {
+          resultToSend.success = false
+          resultToSend.message = `teamsAndOrganizations is undefined`
+          res.send(resultToSend)
+        }
+
+
+      }
+    })
+  }
+
   /*=====================Helper Function==========================*/
+  private grabTeamInfo = (req: express.Request, res: express.Response, userInfo: types.IRawUserObject): Promise<types.ITeam> => {
+    return new Promise((resolve, reject) => {
+      req.app.get('db').users_to_teams.findOne({user_id: userInfo.id})
+      .then(async (userToTeam: types.ITeamToUsers) => {
+        
+        if (userToTeam) {
+          this.teamUtil = new TeamInfo(userToTeam.team_id)
+          let teamInfo = await this.teamUtil.grabTeamInfo(req)
+          resolve(teamInfo)
+        } else {
+          reject({success: false, message: `No teams found for user with id ${userInfo.id}`})
+        }
+      }).catch((err: types.IError) => reject(err))
+    })
+
+  } 
+
+  private grabOrganizationInfo = (req: express.Request, res: express.Response, userInfo: types.IRawUserObject): Promise<types.IOrganization> => {
+    return new Promise((resolve, reject) => {
+      req.app.get('db').users_to_organizations.findOne({user_id: userInfo.id})
+      .then(async (userToOrganization: types.IUserToOrganization) => {
+
+        if (userToOrganization) {
+          this.organizationUtil = new OrganizationInfo(userToOrganization.organization_id)
+          let organizationInfo = await this.organizationUtil.grabOrganizationInfo(req)
+          resolve(organizationInfo)
+        } else {
+          reject({success: false, message: `No organizations found for user with id ${userInfo.id}`})
+        }
+      }).catch((err: types.IError) => reject(err))
+    })
+
+  }
 
   private hashPasswordAndAddUser = (req: types.expressRequest, res: express.Response, token: string, user: types.IRawUserObject): Promise<types.IRawUserObject> => {
     return new Promise((resolve, reject) => {
