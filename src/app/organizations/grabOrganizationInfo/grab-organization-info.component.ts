@@ -1,5 +1,5 @@
 //----Angular Imports----//
-import { Component }                    from '@angular/core';
+import { Component, OnInit }                    from '@angular/core';
 import { Router }                       from '@angular/router';
 
 //----Other Imports----//
@@ -8,28 +8,28 @@ import { OrganizationService }    from '../../services/organizations.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'create-organization',
-  templateUrl: './create-organization.component.html',
-  styleUrls: ['./create-organization.component.css']
+  selector: 'grab-organization',
+  templateUrl: './grab-organization-info.component.html',
+  styleUrls: ['./grab-organization-info.component.css']
 })
 
-export class CreateOrganizationComponent 
+export class GrabOrganizationComponent implements OnInit
 {
 
   constructor(private router: Router,
               private orgService: OrganizationService) {}
   
+  ngOnInit() {
+    this.orgService.getOrganizations()
+  }
+  
   //----------Properties-----------//
 
-  /**
-   * Registering user's information
-   */
-  model: ICreateOrganization = <any>{};
 
   //----------Methods-----------//
 
-  createOrganization() {
-    this.orgService.createOrganization(this.model)
+  get organizations() {
+    return this.orgService.organizations
   }
   
 

@@ -44,3 +44,22 @@ export interface ICreateOrganization {
   description: string,
   created?: Date
 }
+
+export interface ICreateTeam {
+  name: string,
+  description: string
+}
+
+export interface ITeam {
+  
+}
+
+/**
+ * Interface for organizations
+ */
+export interface IOrganization {
+  id: number,
+  name: string,
+  description: string,
+  start_date: Date
+}

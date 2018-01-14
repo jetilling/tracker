@@ -7,6 +7,11 @@ import { Observable }                               from 'rxjs/Observable';
 export class CommonFunctions {
 
   /**
+   * User id for the logged in user
+   */
+  userId: number
+
+  /**
    * Sets the JSON web token in the request header
    */
   jwt() 
@@ -16,6 +21,13 @@ export class CommonFunctions {
         let headers = new Headers({ 'Authorization': userCookie});
         return new RequestOptions({ headers: headers });
     }
+  }
+
+  /**
+   * Get user Id from localStorage
+   */
+  getUserIdFromLocalStorage() {
+    if (!this.userId) this.userId = parseInt(localStorage.getItem("trackerId"))
   }
 
   /**

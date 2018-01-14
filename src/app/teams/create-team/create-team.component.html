@@ -1,23 +1,23 @@
-<form class="organization-form" name="form" (ngSubmit)="f.form.valid && createOrganization()" #f="ngForm" novalidate>
+<form class="team-form" name="form" (ngSubmit)="f.form.valid && createTeam()" #f="ngForm" novalidate>
     <div class="row">
         <div class="col s4 offset-m4">
             <div class="center-align">
-                <span class="card-title">Create an Organization</span>
+                <span class="card-title">Create a Team</span>
                 <div class="row">
                     <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
                         <input class="field-input" type="text" name="name" [(ngModel)]="model.name" #name="ngModel" required />
-                        <label class="field-label" for="name">Name of Organization</label>
-                        <div *ngIf="f.submitted && !name.valid" class="form-Name-error">Organization name is required</div>
+                        <label class="field-label" for="name">Name of Team</label>
+                        <div *ngIf="f.submitted && !name.valid" class="form-Name-error">Team name is required</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12  form-input" [ngClass]="{ 'has-error': f.submitted && !description.valid }">
                         <textarea id="textarea1" class="materialize-textarea" type="text" name="description" [(ngModel)]="model.description" #description="ngModel"></textarea>
-                        <label class="field-label" for="description">Description of Organization</label>
+                        <label class="field-label" for="description">Description of Team</label>
                     </div>
                 </div>
                 <div class="card-action">
-                    <button [disabled]="loading" id="submit-btn" class="btn login-font register-button">Create Organization</button>
+                    <button [disabled]="loading" id="submit-btn" class="btn login-font register-button">Create Team</button>
                 </div>
             </div>
         </div>

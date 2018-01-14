@@ -1,0 +1,15 @@
+.main-content {
+  width: 84vw
+}
+
+.full-height {
+  height: 100vh;
+  display: flex;
+}
+
+.sideNav {
+  height: 100%;
+  width: 16vw;
+  background: #546e7a
+}
+

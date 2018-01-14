@@ -213,6 +213,7 @@ export class AuthService
  {
     if (res && res.token) {
       document.cookie = `tracker=${res.token}; Path=/;`
+      this.common.userId = res.id
       localStorage.setItem('trackerId', res.id+'');
       this.currentUser = res
       return true

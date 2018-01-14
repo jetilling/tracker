@@ -8,6 +8,7 @@ import { Router }               from '@angular/router';
     Other Imports
 */
 import { AuthService }           from '../services/auth.service';
+import { CommonFunctions }       from '../services/commonFunctions.service';
 
 @Component({
   moduleId: module.id,
@@ -20,6 +21,7 @@ export class DashboardComponent implements OnInit
 {
 
   constructor(private auth: AuthService,
+              private common: CommonFunctions,
               private router: Router){}
 
   /**
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit
         }
       )
     }
+    if (localStorage.getItem('trackerId')) this.common.getUserIdFromLocalStorage()
   }
   
   
