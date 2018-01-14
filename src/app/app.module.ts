@@ -11,12 +11,16 @@ import { LoginComponent }                       from './authentication/login/log
 import { RegisterComponent }                    from './authentication/register/register.component';
 import { DashboardComponent }                   from './dashboard/dashboard.component';
 import { CreateOrganizationComponent }          from './organizations/createOrganization/create-organization.component';
+import { GrabOrganizationComponent }            from './organizations/grabOrganizationInfo/grab-organization-info.component';
+import { TeamMenuComponent }                    from './teams/team-menu/team-menu.component';
+import { CreateTeamComponent }                  from './teams/create-team/create-team.component';
 
 //--------Services---------//
 import { AuthService }                          from './services/auth.service';
 import { CommonFunctions }                      from './services/commonFunctions.service';
 import { UsersService }                         from './services/users.service';
 import { OrganizationService }                  from './services/organizations.service';
+import { TeamService }                          from './services/team.service';
 
 //--------Routing---------//
 import { AppRoutingModule }                     from './app-routing.module';
@@ -37,12 +41,16 @@ import { AppRoutingModule }                     from './app-routing.module';
     RegisterComponent,
     DashboardComponent,
     CreateOrganizationComponent,
+    GrabOrganizationComponent,
+    TeamMenuComponent,
+    CreateTeamComponent,
   ],
   providers: [
     AuthService,
     CommonFunctions,
     UsersService,
-    OrganizationService
+    OrganizationService,
+    TeamService
   ],
   bootstrap: [ MainComponent ]
 })

@@ -3,14 +3,14 @@ import { Injectable, OnInit }                                       from '@angul
 import { Http, Headers, RequestOptions, Response }                  from '@angular/http';
 
 //---Other Imports----//
-import { ICreateOrganization, IOrganization }                  from '../interfaces';
+import { ICreateTeam, ITeam }                                       from '../interfaces';
 import { CommonFunctions }                                          from './commonFunctions.service';
 import { Observable }                                               from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class OrganizationService
+export class TeamService
 {
 
   constructor(private http: Http,
@@ -19,9 +19,9 @@ export class OrganizationService
   //---------Properties----------//
   
   /**
-   * Organizations belonging to the user
+   * Teams belonging to the user
    */
-  organizations: IOrganization[]
+  teams: ITeam[]
   
   /**
    * Gets the current logged in user id
@@ -36,25 +36,24 @@ export class OrganizationService
    * Sends organization to backend
    * @param {ICreateOrganization} organization - Information about organization
    */
-  createOrganization(organization: ICreateOrganization) {
-    organization.created = new Date()
-    const url = '/organization/createOrganization'
-    this.http.post(url, organization, this.common.jwt())
+  createTeam(team: ICreateTeam) {
+    const url = '/team/createTeam'
+    this.http.post(url, team, this.common.jwt())
             .map(this.common.extractData)
             .subscribe(
               res => {
-                this.organizations.push(res.data)
+                this.teams.push(res.data)
               }
             )
   }
 
-  getOrganizations() {
-    const url = `/organization/getOrganizationInfo/true&${this.currentUserId}`
+  getTeams() {
+    const url = `/team/createTeam`
     this.http.get(url, this.common.jwt())
               .map(this.common.extractData)
               .subscribe(
                 res => {
-                  this.organizations = res.data
+                  this.teams = res.data
                 }
               )
   }
