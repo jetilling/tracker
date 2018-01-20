@@ -1,10 +1,10 @@
 //----Angular Imports----//
 import { Component, OnInit }                    from '@angular/core';
-import { Router }                       from '@angular/router';
+import { Router }                               from '@angular/router';
 
 //----Other Imports----//
-import { ICreateOrganization }          from '../../interfaces'
-import { OrganizationService }    from '../../services/organizations.service';
+import { ICreateOrganization, IOrganization }                  from '../../interfaces'
+import { OrganizationService }                  from '../../services/organizations.service';
 
 @Component({
   moduleId: module.id,
@@ -28,8 +28,45 @@ export class GrabOrganizationComponent implements OnInit
 
   //----------Methods-----------//
 
-  get organizations() {
+  get organizations(): IOrganization[] {
     return this.orgService.organizations
+  }
+
+  get activeOrganization(): IOrganization {
+    return this.orgService.activeOrganization
+  }
+
+  get openSwitchOrganization(): boolean {
+    return this.orgService.openSwitchOrganization
+  }
+
+  /**
+   * Trigger to open and close Create Organization component
+   */
+  get openCreateOrganization() {
+    return this.orgService.openCreateOrganization
+  }
+
+  get askForActiveOrganization(): boolean {
+
+    return this.orgService.askForActiveOrganization
+  }
+
+  setAsActive(organizationId: string) {
+    this.orgService.setActiveOrganization(organizationId)
+  }
+
+  toggleCreateOrganization() {
+    this.orgService.changeOpenCreateProperty()
+  }
+
+  switchOrganizations() {
+    this.orgService.changeOpenSwitchProperty()
+  }
+
+  closeCreateOrgModal(event: any) {
+    if (event.target.className === "orgModal") 
+      this.orgService.openCreateOrganization = false
   }
   
 

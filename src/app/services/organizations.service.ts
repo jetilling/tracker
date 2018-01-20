@@ -22,6 +22,26 @@ export class OrganizationService
    * Organizations belonging to the user
    */
   organizations: IOrganization[]
+
+  /**
+   * Active Organization
+   */
+  activeOrganization: IOrganization
+
+  /**
+   * Asks for Organization
+   */
+  askForActiveOrganization: boolean
+
+  /**
+   * Open Create new organization
+   */
+  openCreateOrganization: boolean
+
+  /**
+   * open Switch Organizations component
+   */
+  openSwitchOrganization: boolean
   
   /**
    * Gets the current logged in user id
@@ -44,6 +64,7 @@ export class OrganizationService
             .subscribe(
               res => {
                 this.organizations.push(res.data)
+                this.setActiveOrganization(res.data.id)
               }
             )
   }
@@ -55,8 +76,33 @@ export class OrganizationService
               .subscribe(
                 res => {
                   this.organizations = res.data
+                  let storedOrganization = localStorage.getItem('aorg')
+                  // TODO: This is still a little buggy...
+                  if (this.activeOrganization === undefined) {
+                    if (storedOrganization) this.activeOrganization = this.organizations.find(org => org.id == parseInt(storedOrganization))
+                    else this.askForActiveOrganization = true
+                  }
                 }
               )
+  }
+
+  setActiveOrganization(organizationId: string) {
+    localStorage.setItem('aorg', organizationId)
+    this.activeOrganization = this.organizations.find(org => org.id == parseInt(organizationId))
+    this.askForActiveOrganization = false;
+    this.openSwitchOrganization = false;
+  }
+
+  changeOpenSwitchProperty() {
+    if (this.openSwitchOrganization) 
+      this.openSwitchOrganization = false
+    else this.openSwitchOrganization = true
+  }
+
+  changeOpenCreateProperty() {
+    if (this.openCreateOrganization) 
+      this.openCreateOrganization = false
+    else this.openCreateOrganization = true
   }
 
 }

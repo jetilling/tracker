@@ -2,3 +2,29 @@
   font-size: 25px;
   color: mintcream
 }
+
+.orgModal {
+  position: fixed; /* Stay in place */
+  z-index: 101; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.orgModalContent {
+  background-color: #fefefe;
+  z-index: 102;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  width: 80%; /* Could be more or less, depending on screen size */
+  z-index: 102
+}
+
+.switchOrganization {
+  z-index: 1000;
+  width: 16vw;
+}

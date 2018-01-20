@@ -9,6 +9,7 @@ import { Router }               from '@angular/router';
 */
 import { AuthService }           from '../services/auth.service';
 import { CommonFunctions }       from '../services/commonFunctions.service';
+import { OrganizationService }   from '../services/organizations.service';
 
 @Component({
   moduleId: module.id,
@@ -21,13 +22,21 @@ export class DashboardComponent implements OnInit
 {
 
   constructor(private auth: AuthService,
+              private orgService: OrganizationService,
               private common: CommonFunctions,
               private router: Router){}
 
   /**
    * The JSON web token of the currently logged in user
    */
-  user: string = document.cookie.split("tracker=")[1];
+  user: string = document.cookie.split("tracker=")[1].split(';')[0];
+
+  // /**
+  //  * Trigger to open and close Create Organization component
+  //  */
+  // get openCreateOrganization() {
+  //   return this.orgService.openCreateOrganization
+  // }
   
   userInfo: string
 
@@ -41,8 +50,12 @@ export class DashboardComponent implements OnInit
           if (res){
             this.userInfo = JSON.stringify(res)
           }
+        },
+        err => {
+          if (err) this.auth.logout()
         }
       )
+
     }
     if (localStorage.getItem('trackerId')) this.common.getUserIdFromLocalStorage()
   }
