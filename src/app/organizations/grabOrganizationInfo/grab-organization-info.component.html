@@ -1,6 +1,27 @@
-<div *ngIf="organizations">
-  <div *ngFor="let organization of organizations">
-    <p class="org-name">{{organization.name}}</p>
+<div *ngIf="activeOrganization">
+  <div>
+    <h3 class="org-name">{{activeOrganization.name}}</h3>
+    <button (click)="switchOrganizations()">^</button>
+    <button (click)="toggleCreateOrganization()">+</button>
   </div>
-  
 </div>
+
+<div *ngIf="askForActiveOrganization" class="orgModal">
+  <div class="orgModalContent">
+    Which Organization would you like to work on?
+    <div *ngFor="let organization of organizations">
+      <button (click)="setAsActive(organization.id)">{{organization.name}}</button>
+    </div>
+  </div>
+</div>
+
+  <div *ngIf="openSwitchOrganization" class="switchOrganization">
+    <switch-organization></switch-organization>
+  </div>
+
+  <div *ngIf="openCreateOrganization" class="orgModal" (click)="closeCreateOrgModal($event)">
+    <div class="orgModalContent">
+      <create-organization></create-organization>
+    </div>
+  </div>
+

@@ -12,6 +12,7 @@ import { RegisterComponent }                    from './authentication/register/
 import { DashboardComponent }                   from './dashboard/dashboard.component';
 import { CreateOrganizationComponent }          from './organizations/createOrganization/create-organization.component';
 import { GrabOrganizationComponent }            from './organizations/grabOrganizationInfo/grab-organization-info.component';
+import { SwitchOrganizationComponent }          from './organizations/switchOrganizations/switch-organization.component';
 import { TeamMenuComponent }                    from './teams/team-menu/team-menu.component';
 import { CreateTeamComponent }                  from './teams/create-team/create-team.component';
 
@@ -42,6 +43,7 @@ import { AppRoutingModule }                     from './app-routing.module';
     DashboardComponent,
     CreateOrganizationComponent,
     GrabOrganizationComponent,
+    SwitchOrganizationComponent,
     TeamMenuComponent,
     CreateTeamComponent,
   ],

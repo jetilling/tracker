@@ -16,7 +16,7 @@ export class CommonFunctions {
    */
   jwt() 
   {
-    let userCookie = document.cookie.split("tracker=")[1];
+    let userCookie = document.cookie.split("tracker=")[1].split(';')[0];
     if (userCookie && userCookie.split('.').length === 3) {
         let headers = new Headers({ 'Authorization': userCookie});
         return new RequestOptions({ headers: headers });
