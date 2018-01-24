@@ -19,6 +19,7 @@ let teamInfo = new TeamInfo();
     Endpoints
 */
 teamRouter.get('/searchTeams', teamInfo.teamSearch);
+teamRouter.get('/teamsInOrganization/:organizationId', teamInfo.teamsInOrganization);
 teamRouter.post('/createTeam', createTeam.createTeam);
 teamRouter.post('/addMember', createTeam.addMember);
 

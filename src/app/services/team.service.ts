@@ -3,7 +3,8 @@ import { Injectable, OnInit }                                       from '@angul
 import { Http, Headers, RequestOptions, Response }                  from '@angular/http';
 
 //---Other Imports----//
-import { ICreateTeam, ITeam }                                       from '../interfaces';
+import { ICreateTeam, ITeam, IOrganization }                                       from '../interfaces';
+import { AppStateService }                                          from './appState.service';
 import { CommonFunctions }                                          from './commonFunctions.service';
 import { Observable }                                               from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -14,20 +15,24 @@ export class TeamService
 {
 
   constructor(private http: Http,
-              private common: CommonFunctions) {}
+              private common: CommonFunctions,
+              private state: AppStateService) {}
               
   //---------Properties----------//
-  
-  /**
-   * Teams belonging to the user
-   */
-  teams: ITeam[]
   
   /**
    * Gets the current logged in user id
    */
   get currentUserId(): number {
     return this.common.userId
+  }
+
+  get activeOrganization(): IOrganization {
+    return this.state.activeOrganization
+  }
+
+  get activeOrganizationLoaded(): boolean {
+    return this.state.activeOrganizationLoaded
   }
 
   //--------Methods----------//
@@ -42,20 +47,20 @@ export class TeamService
             .map(this.common.extractData)
             .subscribe(
               res => {
-                this.teams.push(res.data)
+                this.state.teams.push(res.data)
               }
             )
   }
 
-  getTeams() {
-    const url = `/team/createTeam`
-    this.http.get(url, this.common.jwt())
-              .map(this.common.extractData)
-              .subscribe(
-                res => {
-                  this.teams = res.data
-                }
-              )
-  }
+  // getTeams() {
+  //   const url = `/team/teamsInOrganization/${this.activeOrganization.id}`
+  //   this.http.get(url, this.common.jwt())
+  //             .map(this.common.extractData)
+  //             .subscribe(
+  //               res => {
+  //                 if (res.success) this.state.teams = res.data
+  //               }
+  //             )
+  // }
 
 }

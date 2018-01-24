@@ -31,8 +31,10 @@ export class CreateTeam
   }
 
   createTeam = async (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+    let db = req.app.get('db');
     let teamName: string = req.body.name;
     let description: string = req.body.description;
+    let organizationId: number = req.body.organizationId
     this.userUtil = new UserInfo(req.user)
     let userInfo = await this.userUtil.grabSafeUserInfo(req)
     
@@ -41,7 +43,7 @@ export class CreateTeam
       /*
         First the team is created
       */
-      req.app.get('db').teams.insert({
+      db.teams.insert({
         name: teamName,
         description: description,
         created_on: new Date(),
@@ -51,10 +53,16 @@ export class CreateTeam
         /*
           Then the creator to the team
         */
-        req.app.get('db').users_to_teams.insert({
+        db.users_to_teams.insert({
           team_id: result.id,
           user_id: req.user,
           level: 1
+        }).then(() => {
+
+          db.teams_to_organizations.insert({
+            team_id: result.id,
+            organization_id: organizationId
+          })
         })
 
         res.status(200).send({success: true})

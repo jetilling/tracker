@@ -5,19 +5,24 @@ import { Http, Headers, RequestOptions, Response }      from '@angular/http';
 
 //----Other Imports----//
 import { IRegisterUser, IUsersObject, IEmail, IUser }   from '../interfaces';
+import { AppStateService }                              from './appState.service';
 import { CommonFunctions }                              from './commonFunctions.service';
 import { UsersService }                                 from './users.service';
+import { SetUpService }                                 from './setUp.service';
 import { Observable }                                   from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { setTimeout } from 'timers';
 
 @Injectable()
 export class AuthService
 {
 
     constructor(private http: Http,
+              private state: AppStateService,
               private router: Router,
               private usersService: UsersService,
+              private setUpService: SetUpService,
               private common: CommonFunctions) {}  
 
   //-----------Properties-------------//
@@ -67,12 +72,24 @@ export class AuthService
   /**
    * Retrieves current user's id number
    */
-  getUser(): Observable<string> 
+  getUser() 
   {
     const url = '/user/loggedInUser'
-    return this.http.get(url, this.common.jwt())
+    this.http.get(url, this.common.jwt())
         .map(this.common.extractData)
-        .catch(this.common.handleError);
+        .subscribe(
+          res => {
+            if (res){
+              this.state.userId = res.data.id
+              this.state.userInfo = res.data
+              this.state.userLoaded = true
+              this.setUpService.fetchData("LoadOrganization")
+            }
+          },
+          err => {
+            if (err) this.logout()
+          }
+        )
   }
 
   /**

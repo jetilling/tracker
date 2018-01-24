@@ -5,6 +5,8 @@ import { Router }                               from '@angular/router';
 //----Other Imports----//
 import { ICreateOrganization, IOrganization }                  from '../../interfaces'
 import { OrganizationService }                  from '../../services/organizations.service';
+import { AppStateService }                      from '../../services/appState.service';
+import { SetUpService }                         from '../../services/setUp.service';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +19,9 @@ export class SwitchOrganizationComponent
 {
 
   constructor(private router: Router,
-              private orgService: OrganizationService) {}
+              private orgService: OrganizationService,
+              private setUpService: SetUpService,
+              private state: AppStateService) {}
 
   
   //----------Properties-----------//
@@ -26,15 +30,15 @@ export class SwitchOrganizationComponent
   //----------Methods-----------//
 
   get organizations() {
-    return this.orgService.organizations
+    return this.state.organizations
   }
 
   get activeOrganization() {
-    return this.orgService.activeOrganization
+    return this.state.activeOrganization
   }
 
   switchOrganization(organizationId: string) {
-    this.orgService.setActiveOrganization(organizationId)
+    this.setUpService.setActiveOrganization(organizationId)
   }
 
 }

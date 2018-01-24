@@ -7,9 +7,11 @@ import { Router }               from '@angular/router';
 /*
     Other Imports
 */
+import { AppStateService }       from '../services/appState.service';
 import { AuthService }           from '../services/auth.service';
 import { CommonFunctions }       from '../services/commonFunctions.service';
 import { OrganizationService }   from '../services/organizations.service';
+import { SetUpService }          from '../services/setUp.service';
 
 @Component({
   moduleId: module.id,
@@ -24,6 +26,8 @@ export class DashboardComponent implements OnInit
   constructor(private auth: AuthService,
               private orgService: OrganizationService,
               private common: CommonFunctions,
+              private state: AppStateService,
+              private setUpService: SetUpService,
               private router: Router){}
 
   /**
@@ -31,38 +35,36 @@ export class DashboardComponent implements OnInit
    */
   user: string = document.cookie.split("tracker=")[1].split(';')[0];
 
-  // /**
-  //  * Trigger to open and close Create Organization component
-  //  */
-  // get openCreateOrganization() {
-  //   return this.orgService.openCreateOrganization
-  // }
-  
-  userInfo: string
-
-
   ngOnInit() 
   {
-    if(this.user && this.user.split('.').length === 3){
-    this.auth.getUser()
-      .subscribe(
-        res => {
-          if (res){
-            this.userInfo = JSON.stringify(res)
-          }
-        },
-        err => {
-          if (err) this.auth.logout()
-        }
-      )
-
+    if (!this.state.dashboardLoaded && !this.state.userInfo) {
+      if(this.user && this.user.split('.').length === 3){
+        this.auth.getUser()
+      }
     }
     if (localStorage.getItem('trackerId')) this.common.getUserIdFromLocalStorage()
   }
+
   
   
   logout() {
     this.auth.logout()
+  }
+
+  get userLoaded() {
+    return this.state.userLoaded
+  }
+
+  get dashboardLoaded() {
+    return this.state.dashboardLoaded
+  }
+
+  get activeOrganization() {
+    return this.state.activeOrganization
+  }
+
+  get askForActiveOrganization(): boolean {
+    return this.state.askForActiveOrganization
   }
 
 }

@@ -3,7 +3,8 @@ import { Component, OnInit }                    from '@angular/core';
 import { Router }                               from '@angular/router';
 
 //----Other Imports----//
-import { ICreateOrganization, IOrganization }                  from '../../interfaces'
+import { ICreateOrganization, IOrganization }   from '../../interfaces'
+import { AppStateService }                      from '../../services/appState.service';
 import { TeamService }                          from '../../services/team.service';
 
 @Component({
@@ -13,20 +14,40 @@ import { TeamService }                          from '../../services/team.servic
   styleUrls: ['./grab-team-info.component.css']
 })
 
-export class GrabOrganizationComponent implements OnInit
+export class GrabTeamComponent implements OnInit
 {
 
   constructor(private router: Router,
-              private orgService: TeamService) {}
+              private state: AppStateService,
+              private teamService: TeamService) {}
   
   ngOnInit() {
-    this.orgService.getTeams()
+
   }
   
   //----------Properties-----------//
 
+  get showCreateTeam(): boolean {
+    return this.state.showCreateTeam
+  }
+
+  get teamsLoaded(): boolean {
+    return this.state.teamsLoaded
+  }
+
+  get teams() {
+    return this.state.teams
+  }
 
   //----------Methods-----------//
+  showCreateTeamComponent() {
+    this.state.showCreateTeam = true
+  }
+
+  closeCreateTeamModal(event) {
+    if (event.target.className === "teamModal") 
+      this.state.showCreateTeam = false
+  }
 
 
 }

@@ -78,14 +78,14 @@ CREATE TABLE users_to_teams (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES teams(id),
   user_id INTEGER REFERENCES users(id),
-  level BOOLEAN
+  level INTEGER
 );
 
 CREATE TABLE users_to_jobs (
   id SERIAL PRIMARY KEY,
   job_id INTEGER REFERENCES jobs(id),
   user_id INTEGER REFERENCES users(id),
-  level BOOLEAN,
+  level INTEGER,
   customer BOOLEAN
 );
 

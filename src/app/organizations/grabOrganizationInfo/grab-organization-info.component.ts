@@ -5,6 +5,8 @@ import { Router }                               from '@angular/router';
 //----Other Imports----//
 import { ICreateOrganization, IOrganization }                  from '../../interfaces'
 import { OrganizationService }                  from '../../services/organizations.service';
+import { AppStateService }                      from '../../services/appState.service';
+import { SetUpService }                         from '../../services/setUp.service';
 
 @Component({
   moduleId: module.id,
@@ -17,10 +19,12 @@ export class GrabOrganizationComponent implements OnInit
 {
 
   constructor(private router: Router,
-              private orgService: OrganizationService) {}
+              private orgService: OrganizationService,
+              private setUpService: SetUpService,
+              private state: AppStateService) {}
   
   ngOnInit() {
-    this.orgService.getOrganizations()
+    // this.orgService.getOrganizations()
   }
   
   //----------Properties-----------//
@@ -29,31 +33,30 @@ export class GrabOrganizationComponent implements OnInit
   //----------Methods-----------//
 
   get organizations(): IOrganization[] {
-    return this.orgService.organizations
+    return this.state.organizations
   }
 
   get activeOrganization(): IOrganization {
-    return this.orgService.activeOrganization
+    return this.state.activeOrganization
   }
 
-  get openSwitchOrganization(): boolean {
-    return this.orgService.openSwitchOrganization
+  get showSwitchOrganization(): boolean {
+    return this.state.showSwitchOrganization
   }
 
   /**
-   * Trigger to open and close Create Organization component
+   * Trigger to show and close Create Organization component
    */
-  get openCreateOrganization() {
-    return this.orgService.openCreateOrganization
+  get showCreateOrganization() {
+    return this.state.showCreateOrganization
   }
 
   get askForActiveOrganization(): boolean {
-
-    return this.orgService.askForActiveOrganization
+    return this.state.askForActiveOrganization
   }
 
   setAsActive(organizationId: string) {
-    this.orgService.setActiveOrganization(organizationId)
+    this.setUpService.setActiveOrganization(organizationId)
   }
 
   toggleCreateOrganization() {
@@ -66,7 +69,7 @@ export class GrabOrganizationComponent implements OnInit
 
   closeCreateOrgModal(event: any) {
     if (event.target.className === "orgModal") 
-      this.orgService.openCreateOrganization = false
+      this.state.showCreateOrganization = false
   }
   
 

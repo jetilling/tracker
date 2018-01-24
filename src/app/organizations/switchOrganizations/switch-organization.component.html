@@ -1,5 +1,5 @@
 <div *ngFor="let organization of organizations">
-  <div *ngIf="organization !== activeOrganization">
+  <div *ngIf="organization.id !== activeOrganization.id">
       <button class="switchOrgButton" (click)="switchOrganization(organization.id)">{{organization.name}}</button>
   </div>
 </div>

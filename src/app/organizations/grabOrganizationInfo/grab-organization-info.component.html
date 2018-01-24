@@ -15,11 +15,11 @@
   </div>
 </div>
 
-  <div *ngIf="openSwitchOrganization" class="switchOrganization">
+  <div *ngIf="showSwitchOrganization" class="switchOrganization">
     <switch-organization></switch-organization>
   </div>
 
-  <div *ngIf="openCreateOrganization" class="orgModal" (click)="closeCreateOrgModal($event)">
+  <div *ngIf="showCreateOrganization" class="orgModal" (click)="closeCreateOrgModal($event)">
     <div class="orgModalContent">
       <create-organization></create-organization>
     </div>
