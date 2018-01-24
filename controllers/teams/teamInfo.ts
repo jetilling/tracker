@@ -35,12 +35,40 @@ export class TeamInfo
     
   }
 
-  teamInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  teamInfo = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
+  }
+
+  teamsInOrganization = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      let organizationId = req.params.organizationId
+      let listOfTeams: types.ITeam[] = []
+
+
+      req.app.get('db').teams_to_organizations.find({organization_id: organizationId})
+      .then((teamsToOrganization: types.ITeamToOrganization[]) => {
+
+        teamsToOrganization.forEach(async (team, index) => {
+          listOfTeams.push(await this.getTeamInfoById(req, team.team_id))
+          
+          if (index === teamsToOrganization.length - 1) {
+            res.send({success: true, data: listOfTeams})
+          }
+        });
+      })
   }
   
 
 /*=====================Helper Function==========================*/
+  private getTeamInfoById = (req: express.Request, teamId: number): Promise<types.ITeam> => {
+    return new Promise((resolve, reject) => {
+        let db = req.app.get('db')
+
+        db.teams.findOne({id: teamId})
+        .then((team: types.ITeam) => {
+          resolve(team)
+        })
+    })
+  }
 
 }
 

@@ -7,19 +7,26 @@
       <create-organization></create-organization>
   </div>
 </div> -->
-<div>
+<div *ngIf="dashboardLoaded">
   <div class="full-height">
     <div class="sideNav">
       <grab-organization></grab-organization>
+      <div class="teamsSection">
+        <h5>Teams</h5>
+        <grab-team></grab-team>
+      </div>
       <button (click)="logout()">Logout</button>
     </div>
     <div class="main-content">
-
-      <!-- Organization Modals -->
-      <!-- <div *ngIf="openCreateOrganization">
-        <create-organization></create-organization>
-      </div> -->
+      <!-- <p>{{activeOrganization.name}}</p> -->
         <!-- <create-team></create-team> -->
+        <router-outlet></router-outlet>
     </div>
   </div> 
+</div>
+<div *ngIf="!dashboardLoaded">
+  <img src="../../images/loading.gif" alt="loading...">
+</div>
+<div *ngIf="askForActiveOrganization">
+    <grab-organization></grab-organization> 
 </div>

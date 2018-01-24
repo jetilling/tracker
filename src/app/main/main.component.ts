@@ -27,13 +27,6 @@ export class MainComponent implements OnInit
   {
     if(this.tracker && this.tracker.split('.').length === 3){
     this.auth.getUser()
-      .subscribe(
-        res => {
-          if (res){
-            this.router.navigate(['/dashboard'])
-          }
-        }
-      )
     }
   }
 

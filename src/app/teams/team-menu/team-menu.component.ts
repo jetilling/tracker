@@ -4,6 +4,7 @@ import { Router }                       from '@angular/router';
 
 //----Other Imports----//
 import { ICreateOrganization }          from '../../interfaces'
+import { AppStateService }              from '../../services/appState.service';
 import { TeamService }                  from '../../services/team.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class TeamMenuComponent implements OnInit
 {
 
   constructor(private router: Router,
+              private state: AppStateService,
               private teamService: TeamService) {}
   
   ngOnInit() {
@@ -26,7 +28,7 @@ export class TeamMenuComponent implements OnInit
   //----------Properties-----------//
 
   get teams() {
-    return this.teamService.teams
+    return this.state.teams
   }
 
   //----------Methods-----------//

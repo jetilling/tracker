@@ -15,13 +15,16 @@ import { GrabOrganizationComponent }            from './organizations/grabOrgani
 import { SwitchOrganizationComponent }          from './organizations/switchOrganizations/switch-organization.component';
 import { TeamMenuComponent }                    from './teams/team-menu/team-menu.component';
 import { CreateTeamComponent }                  from './teams/create-team/create-team.component';
+import { GrabTeamComponent }                    from './teams/grabTeamInfo/grab-team-info.component';
 
 //--------Services---------//
+import { AppStateService }                      from './services/appState.service';
 import { AuthService }                          from './services/auth.service';
 import { CommonFunctions }                      from './services/commonFunctions.service';
 import { UsersService }                         from './services/users.service';
 import { OrganizationService }                  from './services/organizations.service';
 import { TeamService }                          from './services/team.service';
+import { SetUpService }                         from './services/setUp.service';
 
 //--------Routing---------//
 import { AppRoutingModule }                     from './app-routing.module';
@@ -46,13 +49,16 @@ import { AppRoutingModule }                     from './app-routing.module';
     SwitchOrganizationComponent,
     TeamMenuComponent,
     CreateTeamComponent,
+    GrabTeamComponent
   ],
   providers: [
     AuthService,
     CommonFunctions,
     UsersService,
     OrganizationService,
-    TeamService
+    TeamService,
+    AppStateService,
+    SetUpService
   ],
   bootstrap: [ MainComponent ]
 })
