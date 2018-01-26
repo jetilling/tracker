@@ -37,7 +37,7 @@ export class SetUpService
 
   //--------Methods----------//
 
-  fetchData(action) {
+  fetchData(action: string) {
       switch (action) {
         case "LoadOrganization":
           this.getOrganizations()
