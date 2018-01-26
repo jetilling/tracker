@@ -44,7 +44,7 @@ export class GrabTeamComponent implements OnInit
     this.state.showCreateTeam = true
   }
 
-  closeCreateTeamModal(event) {
+  closeCreateTeamModal(event: any) {
     if (event.target.className === "teamModal") 
       this.state.showCreateTeam = false
   }
