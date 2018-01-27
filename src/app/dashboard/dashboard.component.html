@@ -12,8 +12,9 @@
     <div class="sideNav">
       <grab-organization></grab-organization>
       <div class="teamsSection">
-        <h5>Teams</h5>
-        <grab-team></grab-team>
+        <h5><a class="teamsLink" routerLink='/dashboard/teams' routerLinkActive="active">Teams</a></h5>
+        <create-team></create-team>
+        <team-menu></team-menu>
       </div>
       <button (click)="logout()">Logout</button>
     </div>

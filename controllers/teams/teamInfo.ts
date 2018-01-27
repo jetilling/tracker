@@ -46,14 +46,16 @@ export class TeamInfo
 
       req.app.get('db').teams_to_organizations.find({organization_id: organizationId})
       .then((teamsToOrganization: types.ITeamToOrganization[]) => {
-
-        teamsToOrganization.forEach(async (team, index) => {
-          listOfTeams.push(await this.getTeamInfoById(req, team.team_id))
-          
-          if (index === teamsToOrganization.length - 1) {
-            res.send({success: true, data: listOfTeams})
-          }
-        });
+        
+        if (teamsToOrganization.length > 0) {
+          teamsToOrganization.forEach(async (team, index) => {
+            listOfTeams.push(await this.getTeamInfoById(req, team.team_id))
+            
+            if (index === teamsToOrganization.length - 1) {
+              res.send({success: true, teams: true, data: listOfTeams})
+            }
+          });
+        } else res.send({success: true, teams: false})
       })
   }
   

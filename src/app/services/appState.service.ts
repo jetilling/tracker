@@ -37,9 +37,15 @@ export class AppStateService
   //-------------------------------------------------Teams--------------------------------------------------------//
 
   /**
-   * Teams the user belonging to the organization
+   * Teams that belong to the active organization
    */
   teams: types.ITeam[] = []
+
+  /**
+   * Information for the active team - this team
+   * will be the one that is active on the dashboard
+   */
+  activeTeam: types.ITeam
 
   /**
    * Open Create New Team component
