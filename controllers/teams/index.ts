@@ -20,6 +20,7 @@ let teamInfo = new TeamInfo();
 */
 teamRouter.get('/searchTeams', teamInfo.teamSearch);
 teamRouter.get('/teamsInOrganization/:organizationId', teamInfo.teamsInOrganization);
+teamRouter.get('/getTeamMembers/:teamId', teamInfo.getTeamMembers)
 teamRouter.post('/createTeam', createTeam.createTeam);
 teamRouter.post('/addMember', createTeam.addMember);
 

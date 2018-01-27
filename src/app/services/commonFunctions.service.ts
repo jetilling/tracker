@@ -24,13 +24,6 @@ export class CommonFunctions {
   }
 
   /**
-   * Get user Id from localStorage
-   */
-  getUserIdFromLocalStorage() {
-    if (!this.userId) this.userId = parseInt(localStorage.getItem("trackerId"))
-  }
-
-  /**
    * Formats response from server
    */
   extractData(res: Response) 

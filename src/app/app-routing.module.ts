@@ -7,12 +7,15 @@ import { RegisterComponent }                    from './authentication/register/
 import { LoginComponent }                       from './authentication/login/login.component';
 import { DashboardComponent }                   from './dashboard/dashboard.component';
 
+import { AuthGuard }                            from './services/auth-guard.service';
+
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'landing', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
+  { path: 'dashboard', 
+    loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
 ];
 
 @NgModule({

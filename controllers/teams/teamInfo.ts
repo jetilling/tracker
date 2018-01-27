@@ -58,6 +58,17 @@ export class TeamInfo
         } else res.send({success: true, teams: false})
       })
   }
+
+  getTeamMembers = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+
+    console.log('endpoint hit')
+      let teamId = req.params.teamId;
+
+      req.app.get('db').users_to_teams.find({team_id: teamId})
+      .then((usersToTeams: types.ITeamToUsers) => {
+        console.log(usersToTeams)
+      })
+  }
   
 
 /*=====================Helper Function==========================*/

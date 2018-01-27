@@ -30,7 +30,7 @@ export class TeamsDashboardComponent implements OnInit
   
   //----------Properties-----------//
 
-  get activeTeam(): ITeam {
+  get activeTeam(): ITeam | ITeam[] {
     return this.state.activeTeam
   }
 

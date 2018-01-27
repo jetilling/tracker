@@ -13,7 +13,7 @@ export class AppStateService
   /**
    * dashboard has been loaded
    */
-  dashboardLoaded: boolean
+  dashboardLoaded: boolean = false
 
   //------------------------------------------------Users-------------------------------------------------------//
 
@@ -55,7 +55,7 @@ export class AppStateService
    * Information for the active team - this team
    * will be the one that is active on the dashboard
    */
-  activeTeam: types.ITeam
+  activeTeam: types.ITeam[] | types.ITeam
 
   /**
    * Open Create New Team component
