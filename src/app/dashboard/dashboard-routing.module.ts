@@ -12,9 +12,15 @@ import { GrabTeamComponent }                    from '../teams/grabTeamInfo/grab
 import { TeamsDashboardComponent }              from '../teams/teams-dashboard/teams-dashboard.component';
 import { OverviewComponent }                    from '../overview/overview.component';
 
+//----------Services----------//
+import { AuthGuard }                            from '../services/auth-guard.service';
+
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent, children: [
+  { path: 'dashboard', 
+  component: DashboardComponent, 
+  canActivate: [AuthGuard],
+  children: [
     {
       path: '',
       children: [

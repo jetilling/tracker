@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit
         this.auth.getUser()
       }
     }
+    // this.setUpService.fetchData("LoadOrganization")
     if (localStorage.getItem('trackerId')) this.common.getUserIdFromLocalStorage()
   }
 
