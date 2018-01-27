@@ -27,27 +27,27 @@ export class GrabTeamComponent implements OnInit
   
   //----------Properties-----------//
 
-  get showCreateTeam(): boolean {
-    return this.state.showCreateTeam
-  }
+  // get showCreateTeam(): boolean {
+  //   return this.state.showCreateTeam
+  // }
 
-  get teamsLoaded(): boolean {
-    return this.state.teamsLoaded
-  }
+  // get teamsLoaded(): boolean {
+  //   return this.state.teamsLoaded
+  // }
 
-  get teams() {
-    return this.state.teams
-  }
+  // get teams() {
+  //   return this.state.teams
+  // }
 
-  //----------Methods-----------//
-  showCreateTeamComponent() {
-    this.state.showCreateTeam = true
-  }
+  // //----------Methods-----------//
+  // showCreateTeamComponent() {
+  //   this.state.showCreateTeam = true
+  // }
 
-  closeCreateTeamModal(event: any) {
-    if (event.target.className === "teamModal") 
-      this.state.showCreateTeam = false
-  }
+  // closeCreateTeamModal(event: any) {
+  //   if (event.target.className === "teamModal") 
+  //     this.state.showCreateTeam = false
+  // }
 
 
 }

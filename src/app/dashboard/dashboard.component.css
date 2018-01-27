@@ -1,3 +1,7 @@
+h5 {
+  display: inline-block;
+}
+
 .main-content {
   width: 84vw
 }
@@ -11,5 +15,10 @@
   height: 100%;
   width: 16vw;
   background: #546e7a
+}
+
+.teamsLink {
+  color: black;
+  text-decoration: none;
 }
 

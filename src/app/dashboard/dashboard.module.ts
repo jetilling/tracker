@@ -12,6 +12,7 @@ import { SwitchOrganizationComponent }          from '../organizations/switchOrg
 import { TeamMenuComponent }                    from '../teams/team-menu/team-menu.component';
 import { CreateTeamComponent }                  from '../teams/create-team/create-team.component';
 import { GrabTeamComponent }                    from '../teams/grabTeamInfo/grab-team-info.component';
+import { TeamsDashboardComponent }              from '../teams/teams-dashboard/teams-dashboard.component';
 import { OverviewComponent }                    from '../overview/overview.component';
 
 //--------Services---------//
@@ -43,6 +44,7 @@ import { DashboardRoutingModule }               from './dashboard-routing.module
     TeamMenuComponent,
     CreateTeamComponent,
     GrabTeamComponent,
+    TeamsDashboardComponent,
     OverviewComponent
   ],
   providers: [

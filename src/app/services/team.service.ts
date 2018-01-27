@@ -52,15 +52,12 @@ export class TeamService
             )
   }
 
-  // getTeams() {
-  //   const url = `/team/teamsInOrganization/${this.activeOrganization.id}`
-  //   this.http.get(url, this.common.jwt())
-  //             .map(this.common.extractData)
-  //             .subscribe(
-  //               res => {
-  //                 if (res.success) this.state.teams = res.data
-  //               }
-  //             )
-  // }
+  findAndSetActiveTeam(teamId: string) {
+    console.log(teamId)
+    let id = parseInt(teamId)
+    this.state.teams.forEach(team => {
+      if (team.id == id) this.state.activeTeam = team 
+    })
+  }
 
 }

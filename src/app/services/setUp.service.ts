@@ -89,9 +89,14 @@ export class SetUpService
               .subscribe(
                 res => {
                   if (res.success) {
-                    this.state.teams = res.data
+                    if (res.teams) {
+                      this.state.teams = res.data
+                      this.state.teamsLoaded = true
+                    } else {
+                    this.state.teams = [];
                     this.state.teamsLoaded = true
                   }
+                }
                   this.fetchData("PaintDashboard")
                 }
               )
