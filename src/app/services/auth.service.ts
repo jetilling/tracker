@@ -82,6 +82,7 @@ export class AuthService
             if (res){
               this.state.userId = res.data.id
               this.state.userInfo = res.data
+              this.state.userLoggedIn = true
               this.state.userLoaded = true
               this.setUpService.fetchData("LoadOrganization")
             }
@@ -107,6 +108,7 @@ export class AuthService
               res => {
                 let successfullySetCookie: boolean = this.setCookies(res);
                 if (successfullySetCookie) {
+                  this.state.userLoggedIn = true
                   this.router.navigate(['/dashboard'])
                 }
               },

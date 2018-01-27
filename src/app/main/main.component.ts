@@ -25,9 +25,9 @@ export class MainComponent implements OnInit
 
   ngOnInit() 
   {
-    if(this.tracker && this.tracker.split('.').length === 3){
-    this.auth.getUser()
-    }
+    // if(this.tracker && this.tracker.split('.').length === 3){
+    // this.auth.getUser()
+    // }
   }
 
 }

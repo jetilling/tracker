@@ -18,6 +18,7 @@ import { OverviewComponent }                    from '../overview/overview.compo
 //--------Services---------//
 import { AppStateService }                      from '../services/appState.service';
 import { AuthService }                          from '../services/auth.service';
+import { AuthGuard }                            from '../services/auth-guard.service';
 import { CommonFunctions }                      from '../services/commonFunctions.service';
 import { UsersService }                         from '../services/users.service';
 import { OrganizationService }                  from '../services/organizations.service';
@@ -49,6 +50,7 @@ import { DashboardRoutingModule }               from './dashboard-routing.module
   ],
   providers: [
     AuthService,
+    AuthGuard,
     CommonFunctions,
     UsersService,
     OrganizationService,
