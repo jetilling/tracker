@@ -13,6 +13,7 @@ import { TeamMenuComponent }                    from '../teams/team-menu/team-me
 import { CreateTeamComponent }                  from '../teams/create-team/create-team.component';
 import { GrabTeamComponent }                    from '../teams/grabTeamInfo/grab-team-info.component';
 import { TeamsDashboardComponent }              from '../teams/teams-dashboard/teams-dashboard.component';
+import { AddMemberToTeamComponent }             from '../teams/addMemberToTeam/add-member-to-team.component';
 import { OverviewComponent }                    from '../overview/overview.component';
 
 //--------Services---------//
@@ -46,6 +47,7 @@ import { DashboardRoutingModule }               from './dashboard-routing.module
     CreateTeamComponent,
     GrabTeamComponent,
     TeamsDashboardComponent,
+    AddMemberToTeamComponent,
     OverviewComponent
   ],
   providers: [

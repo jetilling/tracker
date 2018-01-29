@@ -3,7 +3,7 @@ import { Component, OnInit }            from '@angular/core';
 import { Router, ActivatedRoute, Params }               from '@angular/router';
 
 //----Other Imports----//
-import { ITeam }          from '../../interfaces'
+import { ITeam, ISafeUserObject }          from '../../interfaces'
 import { AppStateService }              from '../../services/appState.service';
 import { TeamService }                  from '../../services/team.service';
 import 'rxjs/add/operator/switchMap';
@@ -30,8 +30,12 @@ export class TeamsDashboardComponent implements OnInit
   
   //----------Properties-----------//
 
-  get activeTeam(): ITeam {
+  get activeTeam(): ITeam | ITeam[] {
     return this.state.activeTeam
+  }
+
+  get membersInActiveTeam(): ISafeUserObject[] {
+    return this.state.membersInActiveTeam
   }
 
 

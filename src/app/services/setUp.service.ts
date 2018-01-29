@@ -43,7 +43,8 @@ export class SetUpService
           this.getOrganizations()
           break;
         case "LoadTeams":
-          this.getTeams()
+          this.getTeamData()
+          break;
         case "PaintDashboard":
           this.state.dashboardLoaded = true
           break;
@@ -82,7 +83,7 @@ export class SetUpService
               )
   }
 
-  getTeams() {
+  getTeamData() {
     const url = `/team/teamsInOrganization/${this.activeOrganization.id}`
     this.http.get(url, this.common.jwt())
               .map(this.common.extractData)
@@ -93,13 +94,14 @@ export class SetUpService
                       this.state.teams = res.data
                       this.state.teamsLoaded = true
                     } else {
-                    this.state.teams = [];
-                    this.state.teamsLoaded = true
+                      this.state.teams = [];
+                      this.state.teamsLoaded = true
+                    }
                   }
-                }
                   this.fetchData("PaintDashboard")
                 }
               )
   }
+
 
 }

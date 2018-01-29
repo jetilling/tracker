@@ -36,6 +36,17 @@ export interface IUsersObject {
   login_dates?: Date[];
 }
 
+export interface ISafeUserObject {
+  id: number,
+  email: string,
+  firstname: string,
+  lastname: string,
+  email_validated: boolean,
+  activated: boolean,
+  level: number,
+  token?: string
+}
+
 /**
  * Interface for creating organization
  */
@@ -54,6 +65,10 @@ export interface ITeam {
   id: number,
   name: string,
   description: string
+}
+
+export interface IAddMemberToTeam {
+  
 }
 
 /**

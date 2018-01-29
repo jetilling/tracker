@@ -53,11 +53,28 @@ export class TeamService
   }
 
   findAndSetActiveTeam(teamId: string) {
-    console.log(teamId)
-    let id = parseInt(teamId)
-    this.state.teams.forEach(team => {
-      if (team.id == id) this.state.activeTeam = team 
-    })
+    if (teamId) {
+      let id = parseInt(teamId)
+      this.state.teams.forEach(team => {
+        if (team.id == id) {
+          this.getMemebersOfTeam(teamId)
+          this.state.activeTeam = team 
+        }
+      })
+    } else this.state.activeTeam = []
+  }
+
+  getMemebersOfTeam(teamId: string) {
+    const url = `/team/getTeamMembers/${teamId}`
+    this.http.get(url, this.common.jwt())
+        .map(this.common.extractData)
+        .subscribe(
+          res => {
+            if (res.success) {
+              this.state.membersInActiveTeam = res.data
+            }
+          }
+        )
   }
 
 }

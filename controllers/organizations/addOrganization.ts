@@ -34,8 +34,8 @@ export class AddOrganization
         let organizationName = req.body.name;
         let description = req.body.description;
         let created = req.body.created;
-        this.userUtil = new UserInfo(req.user)
-        let userInfo = await this.userUtil.grabSafeUserInfo(req)
+        this.userUtil = new UserInfo()
+        let userInfo = await this.userUtil.grabSafeUserInfo(req, req.user)
         let newOrganization = {
             name: organizationName,
             description: description,

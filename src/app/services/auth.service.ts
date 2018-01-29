@@ -73,9 +73,9 @@ export class AuthService
    * Retrieves current user's id number
    */
   getUser() 
-  {
+  { 
     const url = '/user/loggedInUser'
-    this.http.get(url, this.common.jwt())
+    return this.http.get(url, this.common.jwt())
         .map(this.common.extractData)
         .subscribe(
           res => {

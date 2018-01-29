@@ -25,7 +25,7 @@ const routes: Routes = [
       path: '',
       children: [
         { path: 'teams', component: TeamsDashboardComponent },
-        { path: 'team/:id', component: TeamsDashboardComponent},
+        { path: 'viewteam/:id', component: TeamsDashboardComponent},
         { path: '', component: OverviewComponent }
       ]
     }

@@ -9,14 +9,22 @@ import * as dotenv from 'dotenv';
 import * as randToken from 'rand-token';
 
 /*
+    Import any application utilities
+*/
+import { UserInfo } from '../../utilities/userInfo';
+
+/*
     Import type interfaces
 */
 import * as types from '../../typeDefinitions/types';
+import * as utilTypes from '../../typeDefinitions/utilTypes'
 
 /*=====================Class==========================*/
 
 export class TeamInfo 
 {
+
+  userUtil: utilTypes.IUserInfo;
 
   constructor(){
     dotenv.config({ path: '.env' });
@@ -57,6 +65,23 @@ export class TeamInfo
           });
         } else res.send({success: true, teams: false})
       })
+  }
+
+  getTeamMembers = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    this.userUtil = new UserInfo()
+    let teamId = req.params.teamId;
+    let members: types.ISafeUserObject[] = []
+
+    req.app.get('db').users_to_teams.find({team_id: teamId})
+    .then((usersToTeams: types.ITeamToUsers[]) => {
+      usersToTeams.forEach(async (element, index) => {
+        members.push(await this.userUtil.grabSafeUserInfo(req, element.user_id))
+
+        if (index === usersToTeams.length - 1) {
+          res.send({success: true, data: members})
+        }
+      })
+    })
   }
   
 
