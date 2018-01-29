@@ -38,7 +38,6 @@ export class SetUpService
   //--------Methods----------//
 
   fetchData(action: string) {
-      console.log(action)
       switch (action) {
         case "LoadOrganization":
           this.getOrganizations()

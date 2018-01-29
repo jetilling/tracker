@@ -35,8 +35,8 @@ export class CreateTeam
     let teamName: string = req.body.name;
     let description: string = req.body.description;
     let organizationId: number = req.body.organizationId
-    this.userUtil = new UserInfo(req.user)
-    let userInfo = await this.userUtil.grabSafeUserInfo(req)
+    this.userUtil = new UserInfo()
+    let userInfo = await this.userUtil.grabSafeUserInfo(req, req.user)
     
     if (userInfo.level === 1) {
 

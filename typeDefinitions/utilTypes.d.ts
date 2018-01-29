@@ -13,7 +13,7 @@ export interface ITime {
 }
 
 export interface IUserInfo {
-  grabSafeUserInfo: (req: express.Request) => Promise<types.ISafeUserObject>
+  grabSafeUserInfo: (req: express.Request, userId: number) => Promise<types.ISafeUserObject>
 }
 
 export interface ITeamInfo {

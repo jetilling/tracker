@@ -5,3 +5,11 @@
 
   <div>{{activeTeam.description}}</div>
 </div>
+
+<div *ngIf="membersInActiveTeam">
+  <h4>Members:</h4>
+  <div *ngFor="let member of membersInActiveTeam">
+    <p>{{member.firstname}}</p>
+    <p>{{member.lastname}}</p>
+  </div>
+</div>

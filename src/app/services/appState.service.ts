@@ -66,6 +66,11 @@ export class AppStateService
    * Teams have been loaded
    */
   teamsLoaded: boolean
+
+  /**
+   * Members in active team
+   */
+  membersInActiveTeam: types.ISafeUserObject[]
               
   //-----------------------------------------------Organizations---------------------------------------------------//
   

@@ -70,7 +70,9 @@ export class TeamService
         .map(this.common.extractData)
         .subscribe(
           res => {
-
+            if (res.success) {
+              this.state.membersInActiveTeam = res.data
+            }
           }
         )
   }
