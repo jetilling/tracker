@@ -26,7 +26,7 @@ let sendTestText = (req: express.Request, res: express.Response, next: express.N
   var client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
   client.messages.create({
-      body: "Just wondering if you've started working on Hal's job?",
+      body: "Just wondering if you've started working on Hal's project?",
       to: 'recipient number here',  // Text this number
       from: process.env.TWILIO_PHONE_NUMBER // From a valid Twilio number
   })

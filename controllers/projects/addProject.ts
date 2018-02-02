@@ -21,7 +21,7 @@ import * as utilTypes from '../../typeDefinitions/utilTypes'
 
 /*=====================Class==========================*/
 
-export class AddJob
+export class AddProject
 {   
     time: utilTypes.ITime
 
@@ -30,17 +30,17 @@ export class AddJob
         this.time = new Time()
     }
 
-    createJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    createProject = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-        let jobTitle = req.body.name;
+        let projectTitle = req.body.name;
         let description = req.body.description;
         let startDate = req.body.startDate;
         let endDate = req.body.endDate;
         let estimatedCost = req.body.cost;
         let duration = this.time.findDifference(startDate, endDate, 's')
 
-        req.app.get('db').jobs.insert({
-            name: jobTitle,
+        req.app.get('db').projects.insert({
+            name: projectTitle,
             description: description,
             start_date: new Date(startDate),
             end_date: new Date(endDate),
@@ -51,17 +51,17 @@ export class AddJob
         .catch((err: types.IError) => next(err))
     }
 
-    addMembersToJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    addMembersToProject = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         
     }
 
-    addTeamToJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    addTeamToProject = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         let teamId = req.body.teamId
-        let jobId = req.body.jobId
+        let projectId = req.body.projectId
 
-        req.app.get('db').teams_to_jobs.insert({
+        req.app.get('db').teams_to_projects.insert({
             team_id: teamId,
-            job_id: jobId
+            project_id: projectId
         }).then(res.send({sucess: true}))
         .catch((err: types.IError) => next(err))
     }

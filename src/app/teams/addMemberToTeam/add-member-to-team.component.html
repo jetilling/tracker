@@ -1,0 +1,9 @@
+<h5>Add a Member!</h5>
+
+<div class="AddMemberInput">
+    <label for="name">Add Member</label>
+    <input name="name" type="text" [(ngModel)]="memberInfo" (keyup)="filterMemberList()">
+</div>
+
+
+<button (click)="hideAddMemberToTeamComponent()">Close</button>

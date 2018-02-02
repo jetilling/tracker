@@ -11,7 +11,7 @@ export interface IError {
 export interface ITimeRaw {
   id: number,
   user_id: number,
-  job_id: number,
+  project_id: number,
   week_time: number,
   clock_in: Date,
   clock_out: Date,
@@ -26,7 +26,7 @@ export interface IWeek {
   total_time_for_week: number
 }
 
-export interface IJobs {
+export interface IProjects {
   id: number,
   name: string,
   description: string,

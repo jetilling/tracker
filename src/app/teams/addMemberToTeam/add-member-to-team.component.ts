@@ -6,6 +6,7 @@ import { Router }                       from '@angular/router';
 import { IAddMemberToTeam }             from '../../interfaces';
 import { AppStateService }              from '../../services/appState.service';
 import { TeamService }                  from '../../services/team.service';
+import { OrganizationService }          from '../../services/organizations.service';
 
 @Component({
   moduleId: module.id,
@@ -22,12 +23,15 @@ export class AddMemberToTeamComponent implements OnInit
    */
   model: IAddMemberToTeam = <any>{};
 
+  memberInfo: string
+
   constructor(private router: Router,
               private state: AppStateService,
+              private orgService: OrganizationService,
               private teamService: TeamService) {}
   
   ngOnInit() {
-    
+    this.orgService.getMemberList()
   }
   
   //----------Properties-----------//
@@ -35,5 +39,13 @@ export class AddMemberToTeamComponent implements OnInit
 
   //----------Methods-----------//
 
+  hideAddMemberToTeamComponent() {
+    this.state.showAddMemberToTeamComponent = false
+  }
+
+  filterMemberList() {
+    console.log(this.memberInfo)
+    this.teamService.getMemberList(this.memberInfo)
+  }
 
 }

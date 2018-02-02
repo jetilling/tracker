@@ -42,7 +42,7 @@ export class AppStateService
    */
   redirectUrl: string
 
-  //-------------------------------------------------Jobs---------------------------------------------------------//
+  //-------------------------------------------------Projects---------------------------------------------------------//
 
   //-------------------------------------------------Teams--------------------------------------------------------//
 
@@ -71,6 +71,11 @@ export class AppStateService
    * Members in active team
    */
   membersInActiveTeam: types.ISafeUserObject[]
+
+  /**
+   * Show the Add Member To Team Component
+   */
+  showAddMemberToTeamComponent: boolean
               
   //-----------------------------------------------Organizations---------------------------------------------------//
   
@@ -103,6 +108,11 @@ export class AppStateService
    * Active Organization is loaded
    */
   activeOrganizationLoaded: boolean
+
+  /**
+   * Members belonging to Active Organization
+   */
+  membersOfActiveOrganization: types.ISafeUserObject[]
   
 
   

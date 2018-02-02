@@ -87,12 +87,12 @@ export class AddOrganization
         }).catch((err: types.IError) => {throw err})
     }
 
-    addJobToOrganization = (req: express.Request, jobInfo: types.IJobs, organizationInfo: types.IOrganization) => {
-        let jobId = jobInfo.id
+    addProjectToOrganization = (req: express.Request, projectInfo: types.IProjects, organizationInfo: types.IOrganization) => {
+        let projectId = projectInfo.id
         let organizationId = organizationInfo.id
 
-        req.app.get('db').jobs_to_organizations.insert({
-          job_id: jobId,
+        req.app.get('db').projects_to_organizations.insert({
+          project_id: projectId,
           organization_id: organizationId
         }).then((organization: types.IOrganization) => {
           return {sucess: true}

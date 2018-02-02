@@ -38,8 +38,13 @@ export class TeamsDashboardComponent implements OnInit
     return this.state.membersInActiveTeam
   }
 
+  get showAddMemberToTeam(): boolean {
+    return this.state.showAddMemberToTeamComponent
+  }
 
   //----------Methods-----------//
-  
+  showAddMemberToTeamComponent() {
+    this.state.showAddMemberToTeamComponent = true
+  }
 
 }

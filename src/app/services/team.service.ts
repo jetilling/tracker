@@ -61,7 +61,10 @@ export class TeamService
           this.state.activeTeam = team 
         }
       })
-    } else this.state.activeTeam = []
+    } else {
+      this.state.activeTeam = undefined
+      this.state.membersInActiveTeam = undefined
+    }
   }
 
   getMemebersOfTeam(teamId: string) {

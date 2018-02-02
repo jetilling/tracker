@@ -41,22 +41,20 @@ export class OrganizationService
             )
   }
 
-  // getOrganizations() {
-  //   const url = `/organization/getOrganizationInfo/true&${this.state.userId}`
-  //   this.http.get(url, this.common.jwt())
-  //             .map(this.common.extractData)
-  //             .subscribe(
-  //               res => {
-  //                 this.state.organizations = res.data
-  //                 let storedOrganization = localStorage.getItem('aorg')
-  //                 // TODO: This is still a little buggy...
-  //                 if (this.state.activeOrganization === undefined) {
-  //                   if (storedOrganization) this.state.activeOrganization = this.state.organizations.find(org => org.id == parseInt(storedOrganization))
-  //                   else this.state.askForActiveOrganization = true
-  //                 }
-  //               }
-  //             )
-  // }
+  getMemberList() {
+    if (!this.state.membersOfActiveOrganization) {
+      const url = `/organization/getMembers/${this.state.activeOrganization.id}`
+      this.http.get(url, this.common.jwt())
+                .map(this.common.extractData)
+                .subscribe(
+                  res => {
+                    if (res.success) {
+                      console.log(res.data)
+                    }
+                  }
+                )
+    }
+  }
 
   changeOpenSwitchProperty() {
     if (this.state.showSwitchOrganization) 
