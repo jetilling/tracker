@@ -38,8 +38,8 @@ export class TeamService
   //--------Methods----------//
 
   /**
-   * Sends organization to backend
-   * @param {ICreateOrganization} organization - Information about organization
+   * Sends team to backend
+   * @param {ICreateTeam} team - Information about new team
    */
   createTeam(team: ICreateTeam) {
     const url = '/team/createTeam'
@@ -61,7 +61,10 @@ export class TeamService
           this.state.activeTeam = team 
         }
       })
-    } else this.state.activeTeam = []
+    } else {
+      this.state.activeTeam = undefined
+      this.state.membersInActiveTeam = undefined
+    }
   }
 
   getMemebersOfTeam(teamId: string) {
@@ -75,6 +78,10 @@ export class TeamService
             }
           }
         )
+  }
+
+  getMemberList(memberName: string) {
+    console.log(memberName)
   }
 
 }

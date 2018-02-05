@@ -58,7 +58,8 @@ export class SetUpService
     this.state.activeOrganization = this.state.organizations.find(org => org.id == parseInt(organizationId))
     this.state.askForActiveOrganization = false;
     this.state.showSwitchOrganization = false;
-    this.state.activeOrganizationLoaded = true
+    this.state.membersOfActiveOrganization = undefined;
+    this.state.activeOrganizationLoaded = true;
     this.fetchData("LoadTeams")
   }
 
@@ -101,6 +102,12 @@ export class SetUpService
                   this.fetchData("PaintDashboard")
                 }
               )
+  }
+
+  reset() {
+    for (let prop in this.state) {
+      this.state[prop] = undefined
+    }
   }
 
 

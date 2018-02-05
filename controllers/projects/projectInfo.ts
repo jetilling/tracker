@@ -21,7 +21,7 @@ import * as utilTypes from '../../typeDefinitions/utilTypes'
 
 /*=====================Class==========================*/
 
-export class JobInfo {   
+export class ProjectInfo {   
 
   time: utilTypes.ITime
 
@@ -30,29 +30,29 @@ export class JobInfo {
       this.time = new Time()
   }
 
-  getJobInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  getProjectInfo = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    let jobId = req.params.id;
+    let projectId = req.params.id;
     let db = req.app.get('db')
 
-    db.jobs.findOne({id: jobId})
-    .then((jobRes: types.IJobs) => {
+    db.projects.findOne({id: projectId})
+    .then((projectRes: types.IProjects) => {
 
-      // db.time.find({job_id: jobId})
+      // db.time.find({project_id: projectId})
       // .then((timeRes: types.ITimeRaw) => {
 
       //   db.
       // })
 
-      // **TODO** Get all tables / data that are related to jobs
+      // **TODO** Get all tables / data that are related to projects
       
-      res.send({success: true, data: jobRes})
+      res.send({success: true, data: projectRes})
     }).catch((err: types.IError) => next(err))
   }
 
-  editJob = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  editProject = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    interface IUpdatedJob {
+    interface IUpdatedProject {
       id: number,
       name?: string,
       description?: string,
@@ -63,49 +63,49 @@ export class JobInfo {
       total_seconds_worked?: number
     }
     
-    let jobId = req.body.job;
+    let projectId = req.body.project;
     let propertyUpdated = req.body.propertyUpdated;
     let valueUpdated = req.body.valueUpdated;
-    let updatedJob: IUpdatedJob = {
-      id: jobId
+    let updatedProject: IUpdatedProject = {
+      id: projectId
     }
 
     switch (propertyUpdated) {
       case 'name':
-        updatedJob.name = valueUpdated;
+        updatedProject.name = valueUpdated;
         break;
 
       case 'description':
-        updatedJob.description = valueUpdated;
+        updatedProject.description = valueUpdated;
         break;
 
       case 'start_date':
-        updatedJob.start_date = valueUpdated;
+        updatedProject.start_date = valueUpdated;
         break;
 
       case 'end_date':
-        updatedJob.end_date = valueUpdated;
+        updatedProject.end_date = valueUpdated;
         break;
 
       case 'estimated_duration':
-        updatedJob.estimated_duration = valueUpdated;
+        updatedProject.estimated_duration = valueUpdated;
         break;
 
       case 'estimated_cost':
-        updatedJob.estimated_cost = valueUpdated;
+        updatedProject.estimated_cost = valueUpdated;
         break;
 
       case 'total_seconds_worked':
-        updatedJob.total_seconds_worked = valueUpdated;
+        updatedProject.total_seconds_worked = valueUpdated;
         break;
 
       default:
-        res.send(`Error: ${propertyUpdated} doesn't match any job properties.`)
+        res.send(`Error: ${propertyUpdated} doesn't match any project properties.`)
     }
 
-    req.app.get('db').jobs.update(updatedJob)
-    .then((jobRes: types.IJobs) => {
-      res.send({success: true, data: jobRes})
+    req.app.get('db').projects.update(updatedProject)
+    .then((projectRes: types.IProjects) => {
+      res.send({success: true, data: projectRes})
     }).catch((err: types.IError) => next(err))
             
   }

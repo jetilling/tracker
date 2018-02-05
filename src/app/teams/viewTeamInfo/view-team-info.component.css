@@ -1,0 +1,8 @@
+.AddMemberToTeamComponent {
+  position: fixed;
+  z-index: 1000;
+  background: white;
+  border-bottom: 2px solid black;
+  width: 100%;
+  height: 100vh;
+}

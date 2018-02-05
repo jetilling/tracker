@@ -42,7 +42,17 @@ export class AppStateService
    */
   redirectUrl: string
 
-  //-------------------------------------------------Jobs---------------------------------------------------------//
+  //-------------------------------------------------Projects---------------------------------------------------------//
+
+  /**
+   * Open Create New Project component
+   */
+  showCreateProject: boolean
+
+  /**
+   * Active Projects
+   */
+  projects: types.IProject[] = []
 
   //-------------------------------------------------Teams--------------------------------------------------------//
 
@@ -55,7 +65,7 @@ export class AppStateService
    * Information for the active team - this team
    * will be the one that is active on the dashboard
    */
-  activeTeam: types.ITeam[] | types.ITeam
+  activeTeam: types.ITeam
 
   /**
    * Open Create New Team component
@@ -71,6 +81,11 @@ export class AppStateService
    * Members in active team
    */
   membersInActiveTeam: types.ISafeUserObject[]
+
+  /**
+   * Show the Add Member To Team Component
+   */
+  showAddMemberToTeamComponent: boolean
               
   //-----------------------------------------------Organizations---------------------------------------------------//
   
@@ -103,6 +118,11 @@ export class AppStateService
    * Active Organization is loaded
    */
   activeOrganizationLoaded: boolean
+
+  /**
+   * Members belonging to Active Organization
+   */
+  membersOfActiveOrganization: types.ISafeUserObject[]
   
 
   

@@ -30,16 +30,21 @@ export class TeamsDashboardComponent implements OnInit
   
   //----------Properties-----------//
 
-  get activeTeam(): ITeam | ITeam[] {
-    return this.state.activeTeam
-  }
+  // get activeTeam(): ITeam | ITeam[] {
+  //   return this.state.activeTeam
+  // }
 
-  get membersInActiveTeam(): ISafeUserObject[] {
-    return this.state.membersInActiveTeam
-  }
+  // get membersInActiveTeam(): ISafeUserObject[] {
+  //   return this.state.membersInActiveTeam
+  // }
 
+  // get showAddMemberToTeam(): boolean {
+  //   return this.state.showAddMemberToTeamComponent
+  // }
 
-  //----------Methods-----------//
-  
+  // //----------Methods-----------//
+  // showAddMemberToTeamComponent() {
+  //   this.state.showAddMemberToTeamComponent = true
+  // }
 
 }

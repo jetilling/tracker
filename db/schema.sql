@@ -19,7 +19,7 @@ CREATE TABLE users (
   last_updated TIMESTAMP
 );
 
-CREATE TABLE jobs (
+CREATE TABLE projects (
   id SERIAL PRIMARY KEY,
   name TEXT,
   description TEXT,
@@ -51,7 +51,7 @@ CREATE TABLE week_time (
 CREATE TABLE time (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
-  job_id INTEGER REFERENCES jobs(id),
+  project_id INTEGER REFERENCES projects(id),
   week_time INTEGER REFERENCES week_time(id),
   clock_in TIMESTAMP,
   clock_out TIMESTAMP,
@@ -81,18 +81,18 @@ CREATE TABLE users_to_teams (
   level INTEGER
 );
 
-CREATE TABLE users_to_jobs (
+CREATE TABLE users_to_projects (
   id SERIAL PRIMARY KEY,
-  job_id INTEGER REFERENCES jobs(id),
+  project_id INTEGER REFERENCES projects(id),
   user_id INTEGER REFERENCES users(id),
   level INTEGER,
   customer BOOLEAN
 );
 
-CREATE TABLE teams_to_jobs (
+CREATE TABLE teams_to_projects (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES teams(id),
-  job_id INTEGER REFERENCES jobs(id)
+  project_id INTEGER REFERENCES projects(id)
 );
 
 CREATE TABLE teams_to_organizations (
@@ -101,9 +101,9 @@ CREATE TABLE teams_to_organizations (
   organization_id INTEGER REFERENCES organizations(id)
 );
 
-CREATE TABLE jobs_to_organizations (
+CREATE TABLE projects_to_organizations (
   id SERIAL PRIMARY KEY,
-  job_id INTEGER REFERENCES jobs(id),
+  project_id INTEGER REFERENCES projects(id),
   organization_id INTEGER REFERENCES organizations(id)
 );
 

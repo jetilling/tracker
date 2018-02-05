@@ -42,6 +42,46 @@ export class OrganizationInfo
 
     }
 
+    getMembers = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+        this.userUtil = new UserInfo()
+        let organizationId = req.params.organizationId
+        let members: types.ISafeUserObject[] = []
+
+        req.app.get('db').users_to_organizations.find({organization_id: organizationId})
+        .then((usersToOrganizations: types.IUserToOrganization[]) => {
+            usersToOrganizations.forEach(async (element, index) => {
+                members.push(await this.userUtil.grabSafeUserInfo(req, element.user_id))
+
+                if (index === usersToOrganizations.length - 1) {
+                    res.send({success: true, data: members})
+                }
+            })
+        })
+
+    }
+
+    getFilteredMembers = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
+        this.userUtil = new UserInfo()
+        let organizationId = req.params.organizationId
+        let teamId = req.params.teamId
+        let members: types.ISafeUserObject[] = []
+        let finalList;
+
+        req.app.get('db').users_to_organizations.find({organization_id: organizationId})
+        .then((usersToOrganizations: types.IUserToOrganization[]) => {
+            usersToOrganizations.forEach(async (element, index) => {
+                if (element.user_id !== req.user) {
+                    members.push(await this.userUtil.grabSafeUserInfo(req, element.user_id))
+                }
+                if (index === usersToOrganizations.length - 1) {
+                    finalList = await this.removeTeamMembersFromList(req, teamId, members)
+                    res.send({success: true, data: members})
+                }
+            })
+        })
+
+    }
+
   /*=====================Helper Function==========================*/
     
     getByUser = (req: types.expressRequest, id: number) => {
@@ -71,6 +111,10 @@ export class OrganizationInfo
                 resolve(organization)
             })
         })
+    }
+
+    removeTeamMembersFromList = (req: express.Request, teamId: number, members: types.ISafeUserObject[]) => {
+        
     }
 }
 

@@ -34,13 +34,13 @@ export class EditTIme
 
   clockIn = (req: types.expressRequest, res: express.Response, next: express.NextFunction) => {
 
-    let jobId = req.body.jobId;
+    let projectId = req.body.projectId;
     let userId = req.user;
     let current_time = req.body.time;
 
     req.app.get('db').time.insert({
       user_id: userId,
-      job_id: jobId,
+      project_id: projectId,
       clock_in: moment(current_time)
     }).then((timeRes: types.ITimeRaw) => {
       res.send({success: true, timeId: timeRes.id})
@@ -64,7 +64,7 @@ export class EditTIme
         //For whatever reason my response was being wrapped in [ Anonymous {}]...
         difference = this.time.findDifference(timeRes[0]['clock_in'], timeOut, "s")
         let weekId = timeRes.week_time
-        let jobId = timeRes.job_id
+        let projectId = timeRes.project_id
 
         db.time.update({
           id: timeId,
@@ -73,7 +73,7 @@ export class EditTIme
         }).then(async (time: types.ITimeRaw) => {
 
           /*
-            Here we are adding the time to the week and to the job.
+            Here we are adding the time to the week and to the project.
             Both of these functions are async so we resolve them with a Promise
             and store the result in the timeAdded array. 
 
@@ -81,7 +81,7 @@ export class EditTIme
           */
           timeAdded = Promise.all([
               await this.addToWeekTime(req, difference, weekId),
-              await this.addToJobTotal(req, difference, jobId)
+              await this.addToProjectTotal(req, difference, projectId)
           ]) 
           
           if (timeAdded[0] && timeAdded[1]) res.send({success: true, totalTime: difference})
@@ -97,7 +97,7 @@ export class EditTIme
     let db = req.app.get('db')
     let startOfWeek = moment().startOf('isoWeek').format('MM/DD/YYYY')
     
-    db.jobs.find().then((jobs: types.IJobs) => {
+    db.projects.find().then((projects: types.IProjects) => {
         db.week_time.find({
           week_of: startOfWeek
         }).then((weekInfo: [types.IWeek]) => {
@@ -106,7 +106,7 @@ export class EditTIme
           {
             res.status(200).send({
               success: true, 
-              jobs: jobs, 
+              projects: projects, 
               total_time: weekInfo[0].total_time_for_week
             })
           }
@@ -117,7 +117,7 @@ export class EditTIme
               total_time_for_week: 0,
               week_of: startOfWeek
             }).then((weekInfo: types.IWeek) => {
-              res.status(200).send({success: true, jobs: jobs, total_time: weekInfo.total_time_for_week})
+              res.status(200).send({success: true, projects: projects, total_time: weekInfo.total_time_for_week})
             }).catch((err: types.IError) => next(err))
           }
         }).catch((err: types.IError) => next(err))
@@ -146,17 +146,17 @@ export class EditTIme
 
   }
 
-  private addToJobTotal = (req: express.Request, difference: number, jobId: number) => {
+  private addToProjectTotal = (req: express.Request, difference: number, projectId: number) => {
     return new Promise<boolean>((resolve, reject) => {
       let db = req.app.get('db')
       
-          db.jobs.find({id: jobId}).then((jobRes: types.IJobs) => {
+          db.projects.find({id: projectId}).then((projectRes: types.IProjects) => {
       
-            let totalJobTime: number = jobRes.total_seconds_worked + difference
+            let totalProjectTime: number = projectRes.total_seconds_worked + difference
       
-            db.jobs.update({
-              id: jobId,
-              total_seconds_worked: totalJobTime
+            db.projects.update({
+              id: projectId,
+              total_seconds_worked: totalProjectTime
             }).then(resolve(true))
               .catch((err: types.IError) => reject(err))
           })

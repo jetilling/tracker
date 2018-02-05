@@ -16,7 +16,7 @@ import * as express from 'express';
 */ 
 import * as auth from './controllers/authentication/index';
 import * as time from './controllers/time/index';
-import * as jobs from './controllers/jobs/index';
+import * as projects from './controllers/projects/index';
 import * as teams from './controllers/teams/index';
 import * as users from './controllers/users/index';
 import * as organizations from './controllers/organizations/index';
@@ -75,7 +75,7 @@ export class WebApi
   {
     app.use('/auth', auth);
     app.use('/time', security.ensureAuthenticated, time);
-    app.use('/job', security.ensureAuthenticated, jobs);
+    app.use('/project', security.ensureAuthenticated, projects);
     app.use('/team', security.ensureAuthenticated, teams);
     app.use('/user', security.ensureAuthenticated, users);
     app.use('/organization', security.ensureAuthenticated, organizations)

@@ -151,7 +151,9 @@ export class AuthService
   logout() 
   {
     localStorage.removeItem('trackerId')
+    localStorage.removeItem('aorg')
     document.cookie = 'tracker=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    this.setUpService.reset()
     this.router.navigate(['/login'])
   }
 
@@ -237,6 +239,7 @@ export class AuthService
       this.currentUser = res
       return true
     }
+    //TODO this needs work / rewritten
     else if (res && !res.validated) {
       // TODO: Do something with this..
       console.log('User has not validated their email!')
