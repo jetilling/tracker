@@ -21,6 +21,7 @@ let organizationInfo = new OrganizationInfo();
 */
 organizationRouter.get('/getOrganizationInfo/:useUserId&:id', organizationInfo.getOrganizationInfo)
 organizationRouter.get('/getMembers/:organizationId', organizationInfo.getMembers);
+organizationRouter.get('/getFilteredMembers/:organizationId/:teamId', organizationInfo.getFilteredMembers);
 organizationRouter.post('/createOrganization', addOrganization.createOrganization);
 
 export = organizationRouter

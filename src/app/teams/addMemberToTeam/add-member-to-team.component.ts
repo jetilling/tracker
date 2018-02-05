@@ -3,7 +3,7 @@ import { Component, OnInit }            from '@angular/core';
 import { Router }                       from '@angular/router';
 
 //----Other Imports----//
-import { IAddMemberToTeam }             from '../../interfaces';
+import { IAddMemberToTeam, ISafeUserObject }             from '../../interfaces';
 import { AppStateService }              from '../../services/appState.service';
 import { TeamService }                  from '../../services/team.service';
 import { OrganizationService }          from '../../services/organizations.service';
@@ -31,12 +31,22 @@ export class AddMemberToTeamComponent implements OnInit
               private teamService: TeamService) {}
   
   ngOnInit() {
-    this.orgService.getMemberList()
+    this.orgService.getFilteredMemberList()
   }
   
   //----------Properties-----------//
 
 
+  // TODO: THIS IS BROKEN!
+  get membersOfActiveOrganization(): ISafeUserObject[] {
+    // if(this.state.membersOfActiveOrganization){
+    //   return this.state.membersOfActiveOrganization.filter(member => {
+    //     if (member.id !== this.state.userInfo.id ||
+    //       this.state.membersInActiveTeam.indexOf(member) === -1) return member
+    //   })
+    // }
+    return this.state.membersOfActiveOrganization
+  }
   //----------Methods-----------//
 
   hideAddMemberToTeamComponent() {

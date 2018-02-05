@@ -71,6 +71,14 @@ export interface IAddMemberToTeam {
   
 }
 
+export interface IProject {
+
+}
+
+export interface ICreateProject {
+  
+}
+
 /**
  * Interface for organizations
  */

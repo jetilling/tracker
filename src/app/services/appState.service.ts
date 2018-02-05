@@ -44,6 +44,16 @@ export class AppStateService
 
   //-------------------------------------------------Projects---------------------------------------------------------//
 
+  /**
+   * Open Create New Project component
+   */
+  showCreateProject: boolean
+
+  /**
+   * Active Projects
+   */
+  projects: types.IProject[] = []
+
   //-------------------------------------------------Teams--------------------------------------------------------//
 
   /**
@@ -55,7 +65,7 @@ export class AppStateService
    * Information for the active team - this team
    * will be the one that is active on the dashboard
    */
-  activeTeam: types.ITeam[] | types.ITeam
+  activeTeam: types.ITeam
 
   /**
    * Open Create New Team component

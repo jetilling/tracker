@@ -41,14 +41,15 @@ export class OrganizationService
             )
   }
 
-  getMemberList() {
+  getFilteredMemberList() {
     if (!this.state.membersOfActiveOrganization) {
-      const url = `/organization/getMembers/${this.state.activeOrganization.id}`
+      const url = `/organization/getFilteredMembers/${this.state.activeOrganization.id}/${this.state.activeTeam.id}`
       this.http.get(url, this.common.jwt())
                 .map(this.common.extractData)
                 .subscribe(
                   res => {
                     if (res.success) {
+                      this.state.membersOfActiveOrganization = res.data
                       console.log(res.data)
                     }
                   }

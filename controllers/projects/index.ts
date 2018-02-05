@@ -20,7 +20,7 @@ let projectInfo = new ProjectInfo()
 */
 projectRouter.get('/projectInfo/:id', projectInfo.getProjectInfo);
 projectRouter.put('/editProject', projectInfo.editProject);
-projectRouter.post('/addProject', addProject.createProject);
+projectRouter.post('/createProject', addProject.createProject);
 projectRouter.post('/addTeamToProject', addProject.addTeamToProject);
 
 

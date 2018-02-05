@@ -7,3 +7,9 @@
 
 
 <button (click)="hideAddMemberToTeamComponent()">Close</button>
+
+<div *ngIf="membersOfActiveOrganization">
+    <div *ngFor="let member of membersOfActiveOrganization">
+        {{member.firstname}} {{member.lastname}}
+    </div>
+</div>
