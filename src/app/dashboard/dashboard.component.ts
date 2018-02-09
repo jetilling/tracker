@@ -37,10 +37,12 @@ export class DashboardComponent implements OnInit
 
   ngOnInit() 
   {
-    if (!this.state.dashboardLoaded && !this.state.userInfo) {
-      if(this.user && this.user.split('.').length === 3){
+    if(this.user && this.user.split('.').length === 3){
+      if (!this.state.dashboardLoaded && !this.state.userInfo) {
         this.auth.getUser()
       }
+    } else {
+      this.auth.logout()
     }
   }
 

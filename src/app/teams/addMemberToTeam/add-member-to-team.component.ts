@@ -36,16 +36,12 @@ export class AddMemberToTeamComponent implements OnInit
   
   //----------Properties-----------//
 
-
-  // TODO: THIS IS BROKEN!
   get membersOfActiveOrganization(): ISafeUserObject[] {
-    // if(this.state.membersOfActiveOrganization){
-    //   return this.state.membersOfActiveOrganization.filter(member => {
-    //     if (member.id !== this.state.userInfo.id ||
-    //       this.state.membersInActiveTeam.indexOf(member) === -1) return member
-    //   })
-    // }
     return this.state.membersOfActiveOrganization
+  }
+
+  get askToAddOutsideMember(): boolean {
+    return this.state.askToAddOutsideMember
   }
   //----------Methods-----------//
 
@@ -54,7 +50,7 @@ export class AddMemberToTeamComponent implements OnInit
   }
 
   filterMemberList() {
-    console.log(this.memberInfo)
+    this.state.askToAddOutsideMember = this.memberInfo ? true : false
     this.teamService.getMemberList(this.memberInfo)
   }
 

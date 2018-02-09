@@ -1,6 +1,7 @@
 import * as express from 'express';
 
 import * as types from './types';
+import { expressRequest } from './types';
 
 export interface ISecurity {
   compare: (hashedPassword: string, userPassword: string) => Promise<boolean>,
@@ -17,7 +18,8 @@ export interface IUserInfo {
 }
 
 export interface ITeamInfo {
-  grabTeamInfo: (req: express.Request) => Promise<types.ITeam>
+  getTeamInfoById: (req: express.Request, teamId: number) => Promise<types.ITeam>,
+  getTeamMemberIds: (req: express.Request, teamId: number) => Promise<number[]>
 }
 
 export interface IOrganizationInfo {

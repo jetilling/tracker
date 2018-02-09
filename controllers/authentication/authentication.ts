@@ -13,7 +13,7 @@ import * as dotenv from 'dotenv';
     Import any application utilities
 */
 import { Security } from '../../utilities/security';
-import { TeamInfo } from '../../utilities/teamInfo';
+import { TeamInfoUtil } from '../../utilities/teamInfo';
 import { OrganizationInfo } from '../../utilities/organizationInfo';
 
 /*
@@ -107,10 +107,10 @@ export class Authenticate
             stating they have yet to validate their email
             TODO: Maybe have an option for them to request a new verification email
         */
-        else if (!result.email_validated) res.send({
-            validated: false,
-            message: 'User is not validated. Please validate your email'
-        })
+        // else if (!result.email_validated) res.send({
+        //     validated: false,
+        //     message: 'User is not validated. Please validate your email'
+        // })
 
         /*
             If a user exists, then:
@@ -227,8 +227,8 @@ export class Authenticate
       .then(async (userToTeam: types.ITeamToUsers) => {
         
         if (userToTeam) {
-          this.teamUtil = new TeamInfo(userToTeam.team_id)
-          let teamInfo = await this.teamUtil.grabTeamInfo(req)
+          this.teamUtil = new TeamInfoUtil()
+          let teamInfo = await this.teamUtil.getTeamInfoById(req, userToTeam.team_id)
           resolve(teamInfo)
         } else {
           reject({success: false, message: `No teams found for user with id ${userInfo.id}`})

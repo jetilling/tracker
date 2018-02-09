@@ -12,6 +12,7 @@ import { MainComponent }                        from './main/main.component';
 import { HomeComponent }                        from './landing/home/home.component';
 import { LoginComponent }                       from './authentication/login/login.component';
 import { RegisterComponent }                    from './authentication/register/register.component';
+import { RegisterNewOrganizationComponent }     from './authentication/register-new-organization/register-new-organization.component';
 
 //--------Services---------//
 import { AppStateService }                      from './services/appState.service';
@@ -41,6 +42,7 @@ import { AppRoutingModule }                     from './app-routing.module';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
+    RegisterNewOrganizationComponent,
   ],
   providers: [
     AuthService,

@@ -10,8 +10,7 @@ import { DashboardComponent }                   from './dashboard/dashboard.comp
 import { AuthGuard }                            from './services/auth-guard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
-  { path: 'landing', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', 

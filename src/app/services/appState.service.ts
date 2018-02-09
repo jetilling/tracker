@@ -86,13 +86,18 @@ export class AppStateService
    * Show the Add Member To Team Component
    */
   showAddMemberToTeamComponent: boolean
+
+  /**
+   * Ask to Add Outside member
+   */
+  askToAddOutsideMember: boolean
               
   //-----------------------------------------------Organizations---------------------------------------------------//
   
   /**
    * Organizations belonging to the user
    */
-  organizations: types.IOrganization[]
+  organizations: types.IOrganization[] = []
 
   /**
    * Active Organization
