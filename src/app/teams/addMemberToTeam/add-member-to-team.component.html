@@ -6,6 +6,10 @@
 </div>
 
 
+
+<div *ngIf="askToAddOutsideMember">
+   Can't find who you're looking for? <button>Invite them to your organization</button>
+</div>
 <button (click)="hideAddMemberToTeamComponent()">Close</button>
 
 <div *ngIf="membersOfActiveOrganization">

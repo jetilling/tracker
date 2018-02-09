@@ -12,6 +12,7 @@ import * as randToken from 'rand-token';
     Import any application utilities
 */
 import { UserInfo } from '../../utilities/userInfo';
+import { TeamInfoUtil } from '../../utilities/teamInfo';
 
 /*
     Import type interfaces
@@ -25,6 +26,7 @@ export class TeamInfo
 {
 
   userUtil: utilTypes.IUserInfo;
+  teamUtil: utilTypes.ITeamInfo;
 
   constructor(){
     dotenv.config({ path: '.env' });
@@ -48,6 +50,7 @@ export class TeamInfo
   }
 
   teamsInOrganization = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      this.teamUtil = new TeamInfoUtil()
       let organizationId = req.params.organizationId
       let listOfTeams: types.ITeam[] = []
 
@@ -57,7 +60,7 @@ export class TeamInfo
         
         if (teamsToOrganization.length > 0) {
           teamsToOrganization.forEach(async (team, index) => {
-            listOfTeams.push(await this.getTeamInfoById(req, team.team_id))
+            listOfTeams.push(await this.teamUtil.getTeamInfoById(req, team.team_id))
             
             if (index === teamsToOrganization.length - 1) {
               res.send({success: true, teams: true, data: listOfTeams})
@@ -86,16 +89,16 @@ export class TeamInfo
   
 
 /*=====================Helper Function==========================*/
-  private getTeamInfoById = (req: express.Request, teamId: number): Promise<types.ITeam> => {
-    return new Promise((resolve, reject) => {
-        let db = req.app.get('db')
+  // private getTeamInfoById = (req: express.Request, teamId: number): Promise<types.ITeam> => {
+  //   return new Promise((resolve, reject) => {
+  //       let db = req.app.get('db')
 
-        db.teams.findOne({id: teamId})
-        .then((team: types.ITeam) => {
-          resolve(team)
-        })
-    })
-  }
+  //       db.teams.findOne({id: teamId})
+  //       .then((team: types.ITeam) => {
+  //         resolve(team)
+  //       })
+  //   })
+  // }
 
 }
 

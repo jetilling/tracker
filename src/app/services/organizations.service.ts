@@ -50,7 +50,6 @@ export class OrganizationService
                   res => {
                     if (res.success) {
                       this.state.membersOfActiveOrganization = res.data
-                      console.log(res.data)
                     }
                   }
                 )

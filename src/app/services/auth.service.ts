@@ -231,7 +231,8 @@ export class AuthService
  * @param {boolean} validates - Trigger if user is new or not
  */
  setCookies(res: IRegisterUser) 
- {
+ {  
+    console.log(res)
     if (res && res.token) {
       document.cookie = `tracker=${res.token}; Path=/;`
       this.common.userId = res.id

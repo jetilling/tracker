@@ -12,6 +12,7 @@ import * as moment from 'moment';
     Import any application utilities
 */
 import { UserInfo } from '../../utilities/userInfo';
+import { TeamInfoUtil } from '../../utilities/teamInfo';
 
 /*
     Import type interfaces
@@ -25,6 +26,7 @@ import { expressRequest } from '../../typeDefinitions/types';
 export class OrganizationInfo
 {   
     userUtil: utilTypes.IUserInfo;
+    teamUtil: utilTypes.ITeamInfo
 
     constructor(){
         dotenv.config({ path: '.env' });
@@ -64,18 +66,18 @@ export class OrganizationInfo
         this.userUtil = new UserInfo()
         let organizationId = req.params.organizationId
         let teamId = req.params.teamId
-        let members: types.ISafeUserObject[] = []
+        let orgMembers: types.ISafeUserObject[] = []
         let finalList;
 
         req.app.get('db').users_to_organizations.find({organization_id: organizationId})
         .then((usersToOrganizations: types.IUserToOrganization[]) => {
             usersToOrganizations.forEach(async (element, index) => {
                 if (element.user_id !== req.user) {
-                    members.push(await this.userUtil.grabSafeUserInfo(req, element.user_id))
+                    orgMembers.push(await this.userUtil.grabSafeUserInfo(req, element.user_id))
                 }
                 if (index === usersToOrganizations.length - 1) {
-                    finalList = await this.removeTeamMembersFromList(req, teamId, members)
-                    res.send({success: true, data: members})
+                    finalList = await this.removeTeamMembersFromList(req, teamId, orgMembers)
+                    res.send({success: true, data: finalList})
                 }
             })
         })
@@ -113,8 +115,18 @@ export class OrganizationInfo
         })
     }
 
-    removeTeamMembersFromList = (req: express.Request, teamId: number, members: types.ISafeUserObject[]) => {
-        
+    removeTeamMembersFromList = (req: express.Request, teamId: number, orgMembers: types.ISafeUserObject[]): Promise<types.ISafeUserObject[]> => {
+        return new Promise((resolve, reject) => {
+            this.teamUtil = new TeamInfoUtil()
+            this.teamUtil.getTeamMemberIds(req, teamId).then(teamMemberIds => {
+            
+                let finalList = orgMembers.filter((member: types.ISafeUserObject) => {
+                    if (teamMemberIds.indexOf(member.id) > -1) return member
+                })
+
+                resolve(finalList)
+            })
+        })
     }
 }
 

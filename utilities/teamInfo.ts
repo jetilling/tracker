@@ -9,29 +9,41 @@ import * as types from '../typeDefinitions/types';
 import * as utilTypes from '../typeDefinitions/utilTypes';
 import { reject } from 'q';
 
-export class TeamInfo implements utilTypes.ITeamInfo {
+export class TeamInfoUtil implements utilTypes.ITeamInfo {
 
-  teamId: number;
-
-  constructor(id: number) {
-    this.teamId = id
+  constructor() {
   }
 
-  grabTeamInfo = (req: express.Request): Promise<types.ITeam> => {
+  getTeamInfoById = (req: express.Request, teamId: number): Promise<types.ITeam> => {
     return new Promise((resolve, reject) => {
       
       let db = req.app.get('db')
 
-      db.teams.findOne({id: this.teamId})
+      db.teams.findOne({id: teamId})
       .then((team: types.ITeam) => {
 
         if (team) {
           resolve(team)
         } else {
-          reject({success: false, message: `No teams with id ${this.teamId} found`})
+          reject({success: false, message: `No teams with id ${teamId} found`})
         }
       })
       
+    })
+  }
+
+  getTeamMemberIds = (req: express.Request, teamId: number): Promise<number[]> => {
+    return new Promise((resolve, reject) => {
+      let db = req.app.get('db')
+
+      db.users_to_teams.find({team_id: teamId})
+      .then((usersToTeams: types.ITeamToUsers[]) => {
+        let result = usersToTeams.map((userTeam: types.ITeamToUsers) => userTeam.user_id);
+        resolve(result)
+
+      }).catch((err: types.IError) => {
+        reject({success: false, message: 'there was an error'})
+      })
     })
   }
 }
